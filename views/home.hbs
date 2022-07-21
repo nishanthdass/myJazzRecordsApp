@@ -26,9 +26,10 @@
             Insert Collection
         </button>
         <ul class="dropdown-menu dropdown-menu-dark">
-            <form class="px-4 py-3">
+            <form class="px-4 py-3" action="/" method="POST">
                 <li class="menu-item">
-                    <input type="text" class="form-control form-control-lg" placeholder="new collection name">
+                    <input type="text" class="form-control form-control-lg" placeholder="new collection name"
+                        name="input-colname">
                 </li>
                 {{!-- <br> --}}
                 <li class="menu-item">

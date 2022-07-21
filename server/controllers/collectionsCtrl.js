@@ -4,7 +4,7 @@ const db = require('../../database/db-connector')
 
 
 exports.view = (req, res) => {
-    let query1 = 'Select * from Collections;';
+    let query1 = `Select * from Collections;`;
     db.pool.query(query1, function (error, rows, fields) {
         if (!error) {
             res.render('home', { data: rows });
@@ -14,6 +14,24 @@ exports.view = (req, res) => {
         }
     })
 };
+
+exports.insert = (req, res) => {
+    //https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
+
+    let data = req.body;
+    let query1 = `INSERT INTO Collections (name) VALUES ('${data['input-colname']}');`
+
+    db.pool.query(query1, function (error, rows, fields) {
+        if (!error) {
+            res.redirect('/');
+        }
+        else {
+            console.log('database error: \n', console.log(err));
+            res.sendStatus(400);
+        }
+    })
+};
+
 // exports.view = (req, res) => {
 //     db.pool.getConnection((err, Connection) => {
 //         if (err) throw err;
