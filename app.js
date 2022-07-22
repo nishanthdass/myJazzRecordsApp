@@ -15,6 +15,7 @@ app.use(bodyparser.json());
 // access static files
 app.use(express.static('public'));
 
+
 // https://stackoverflow.com/questions/69959820/typeerror-exphbs-is-not-a-function
 app.engine('.hbs', expHandBar.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
@@ -42,6 +43,12 @@ app.use('/', musicianroutes);
 
 const genreroutes = require('./server/routes/genres');
 app.use('/', genreroutes);
+
+const performanceroutes = require('./server/routes/performances');
+app.use('/', performanceroutes);
+
+const perfratingroutes = require('./server/routes/perfratings');
+app.use('/', perfratingroutes);
 
 
 

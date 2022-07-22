@@ -1,8 +1,9 @@
 <table class="table table-dark table-striped table-bordered">
     <thead>
         <tr>
-            <th scope="col" class="text-center">genre_id</th>
-            <th scope="col" class="text-center">name</th>
+            <th scope="col" class="text-center">performance_id</th>
+            <th scope="col" class="text-center">musician_id</th>
+            <th scope="col" class="text-center">album_id</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
     </thead>
@@ -11,19 +12,25 @@
             <th scope="row" class="text-center"></th>
             <form class="px-4 py-3" action="/" method="POST">
                 <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="genre name"
-                        name="input-genName">
+                    <input type="text" class="form-control form-control-lg form-control-block"
+                        placeholder="musician name" name="input-perfMusName"> -- To do - use jQuery bootstrap
+                    multiselect dropdown
+                </td>
+                <td class="text-center">
+                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
+                        name="input-perfAlbName">
                 </td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
-                        Genre</button>
+                        Performance</button>
                 </td>
             </form>
         </tr>
         {{#each data}}
         <tr>
-            <th scope="row" class="text-center">{{this.genre_id}}</th>
-            <td class="text-center">{{this.name}}</td>
+            <th scope="row" class="text-center">{{this.performance_id}}</th>
+            <td class="text-center">{{this.musicians_musician_id}}</td>
+            <td class="text-center">{{this.albums_album_id}}</td>
             <td class="text-center">
                 <a href="#" type="button" class="btn btn-warning btn-small"> <i class="bi bi-pencil-square"></i>
                     Edit</a>

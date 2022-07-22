@@ -1,42 +1,21 @@
 <div class="col-8 pb-2">
-    {{!-- <div class=”container”>
-        <div class=”row”>
-            <div class=”col-xs-6 col-md-4”>
-                <form>
-                    <div class="mb-3">
-                        <label for="newIdCollections" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newNameCollections" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div> --}}
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Insert Collection
         </button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-            <form class="px-4 py-3" action="/" method="POST">
-                <li class="menu-item">
-                    <input type="text" class="form-control form-control-lg" placeholder="new collection name"
-                        name="input-colname">
-                </li>
-                {{!-- <br> --}}
-                <li class="menu-item">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </li>
-            </form>
-        </ul>
+        <div class="container-fluid">
+            <ul class=" dropdown-nav__container dropdown-menu">
+                <form class="px-4 py-3" action="/" method="POST">
+                    <li class="menu-item">
+                        <input type="text" class="form-control form-control-lg" placeholder="new collection name"
+                            name="input-colname">
+                    </li>
+                    <li class="menu-item">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </li>
+                </form>
+            </ul>
+        </div>
     </div>
     <br>
     <div>
@@ -54,6 +33,13 @@
             </option>
             {{/each}}
         </select>
+        Use Selectpicker from Bootstrap-select to make a search dropdown box
+        <select class="selectpicker" data-live-search="true">
+            <option data-tokens="ketchup mustard">Hot Dog, Fries and a Soda</option>
+            <option data-tokens="mustard">Burger, Shake and a Smile</option>
+            <option data-tokens="frosting">Sugar, Spice and all things nice</option>
+        </select>
+
     </div>
 </div>
 <table class="table table-dark table-striped table-bordered">
@@ -61,12 +47,23 @@
         <tr>
             <th scope="col" class="text-center">id</th>
             <th scope="col" class="text-center">name</th>
-            <th scope="col" class="text-center">
-                options
-            </th>
+            <th scope="col" class="text-center">options</th>
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <th scope="row" class="text-center"></th>
+            <form class="px-4 py-3" action="/" method="POST">
+                <td class="text-center">
+                    <input type="text" class="form-control form-control-lg form-control-block"
+                        placeholder="collection name" name="input-colName">
+                </td>
+                <td class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
+                        Collection</button>
+                </td>
+            </form>
+        </tr>
         {{#each data}}
         <tr>
             <th scope="row" class="text-center">{{this.collection_id}}</th>

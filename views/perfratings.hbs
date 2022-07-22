@@ -1,49 +1,41 @@
 <table class="table table-dark table-striped table-bordered">
     <thead>
         <tr>
-            <th scope="col" class="text-center">id</th>
-            <th scope="col" class="text-center">name</th>
-            <th scope="col" class="text-center">email</th>
+            <th scope="col" class="text-center">performance_rating_id</th>
             <th scope="col" class="text-center">collections_collection_id</th>
+            <th scope="col" class="text-center">performances_albums_album_id</th>
+            <th scope="col" class="text-center">rating</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <th scope="row" class="text-center"></th>
-            <form class="px-4 py-3" action="/listeners" method="POST">
+            <form class="px-4 py-3" action="/" method="POST">
                 <td class="text-center">
                     <input type="text" class="form-control form-control-lg form-control-block"
-                        placeholder="listener name" name="input-listName">
+                        placeholder="collection name" name="input-perfrateColName">
                 </td>
                 <td class="text-center">
-                    <input type="email" class="form-control form-control-lg form-control-block"
-                        placeholder="new listener email" name="input-listEmail">
+                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
+                        name="input-perfrateAlbName">
                 </td>
                 <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block"
-                        placeholder="collection name" name="input-listColName">
-                    <br>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"
-                            onclick="myFunction()">
-                        <label class="form-check-label" for="defaultCheck1">
-                            create new collection -- TO DO
-                        </label>
-                    </div>
+                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="rating"
+                        name="input-perfrateRating">
                 </td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
-                        Listener</button>
+                        Rating</button>
                 </td>
             </form>
         </tr>
         {{#each data}}
         <tr>
-            <th scope="row" class="text-center">{{this.listeners_id}}</th>
-            <td class="text-center">{{this.name}}</td>
-            <td class="text-center">{{this.email}}</td>
+            <th scope="row" class="text-center">{{this.performance_rating_id}}</th>
             <td class="text-center">{{this.collections_collection_id}}</td>
+            <td class="text-center">{{this.performances_albums_album_id}}</td>
+            <td class="text-center">{{this.rating}}</td>
             <td class="text-center">
                 <a href="#" type="button" class="btn btn-warning btn-small"> <i class="bi bi-pencil-square"></i>
                     Edit</a>

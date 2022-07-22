@@ -19,15 +19,20 @@ exports.insert = (req, res) => {
     //https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
 
     let data = req.body;
-    let query1 = `INSERT INTO Collections (name) VALUES ('${data['input-colname']}');`
+    let query1 = `INSERT INTO Collections (name) VALUES ('${data['input-colName']}');`
 
     db.pool.query(query1, function (error, rows, fields) {
         if (!error) {
             res.redirect('/');
         }
         else {
-            console.log('database error: \n', console.log(err));
-            res.sendStatus(400);
+            console.log('database error: \n', console.log(error));
+
+            res.status(400).send({
+                status: 400,
+                error: 'Not found'
+            })
+
         }
     })
 };

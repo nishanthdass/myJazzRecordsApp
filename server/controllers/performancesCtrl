@@ -4,10 +4,10 @@ const db = require('../../database/db-connector')
 
 
 exports.view = (req, res) => {
-    let query1 = 'Select * from Genres;';
+    let query1 = 'Select * from Performances;';
     db.pool.query(query1, function (error, rows, fields) {
         if (!error) {
-            res.render('genres', { data: rows });
+            res.render('performances', { data: rows });
             console.log(rows)
         }
         else {

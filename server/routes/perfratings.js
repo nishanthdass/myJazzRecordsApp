@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const listenersctrl = require('../controllers/listenersCtrl')
+const perfratingctrl = require('../controllers/perfratingsCtrl')
 // const listenersCtrl = require('../controllers/listenersCtrl')
 
-router.get('/listeners', listenersctrl.view);
-router.post('/listeners', listenersctrl.insert);
+router.get('/perfratings', perfratingctrl.view);
 
 
 module.exports = router;

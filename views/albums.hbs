@@ -11,6 +11,37 @@
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <th scope="row" class="text-center"></th>
+            <form class="px-4 py-3" action="/listeners" method="POST">
+                <td class="text-center">
+                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
+                        name="input-albName">
+                </td>
+                <td class="text-center">
+                    <input type="text" class="form-control form-control-lg form-control-block"
+                        placeholder="recording year" name="input-albRec">
+                </td>
+                <td class="text-center">
+                    <input type="text" class="form-control form-control-lg form-control-block"
+                        placeholder="release year" name="input-albRel">
+                </td>
+                <td class="text-center">
+                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="genre name"
+                        name="input-albGen">
+                </td>
+                <td class="text-center">
+                    <input type="text" class="form-control form-control-sm form-control-block" placeholder="first name"
+                        name="input-albBlFn">
+                    <input type="text" class="form-control form-control-sm form-control-block" placeholder="last name"
+                        name="input-albBlLn">
+                </td>
+                <td class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
+                        Album</button>
+                </td>
+            </form>
+        </tr>
         {{#each data}}
         <tr>
             <th scope="row" class="text-center">{{this.album_id}}</th>
