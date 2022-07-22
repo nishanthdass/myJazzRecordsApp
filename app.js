@@ -15,11 +15,15 @@ app.use(bodyparser.json());
 // access static files
 app.use(express.static('public'));
 
-
+// Handlebars init
 // https://stackoverflow.com/questions/69959820/typeerror-exphbs-is-not-a-function
 app.engine('.hbs', expHandBar.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
+
+
+
+// Handlebars Helpers 
 // https://stackoverflow.com/questions/41764373/how-to-register-custom-handlebars-helpers
 const hbs = expHandBar.create({});
 
@@ -28,7 +32,22 @@ hbs.handlebars.registerHelper('isSelected', function (value, key) {
     return value === key ? 'selected' : '';
 });
 
+hbs.handlebars.registerHelper('changeColor', function (text, options) {
+    text = hbs.handlebars.Utils.escapeExpression(text);
+    console.log(text)
+    if (options.hash.color === "red") {
+        return new hbs.handlebars.SafeString("<span class='redText'>" + text + "</span>");
+    } else if (options.hash.color === "blue") {
+        return new hbs.handlebars.SafeString("<span class='blueText'>" + text + "</span>");
+    } else {
+        return new hbs.handlebars.SafeString("<span class='greenText'>" + text + "</span>");
+    }
+});
 
+
+
+
+// Routes Below
 const collectionroutes = require('./server/routes/collections');
 app.use('/', collectionroutes);
 
@@ -49,10 +68,6 @@ app.use('/', performanceroutes);
 
 const perfratingroutes = require('./server/routes/perfratings');
 app.use('/', perfratingroutes);
-
-
-
-
 
 
 app.listen(PORT, function () {            // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.

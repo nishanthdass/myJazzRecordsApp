@@ -37,6 +37,20 @@ exports.insert = (req, res) => {
     })
 };
 
+exports.edit = (req, res) => {
+    console.log(req)
+    res.redirect('/');
+    // let query1 = `Select * from Collections WHERE collection_id = ;`;
+    // db.pool.query(query1, function (error, rows, fields) {
+    //     if (!error) {
+    //         res.render('home', { data: rows });
+    //     }
+    //     else {
+    //         console.log('database error: \n', console.log(err))
+    //     }
+    // })
+};
+
 // exports.view = (req, res) => {
 //     db.pool.getConnection((err, Connection) => {
 //         if (err) throw err;

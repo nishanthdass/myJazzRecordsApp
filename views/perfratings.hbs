@@ -3,8 +3,10 @@
         <tr>
             <th scope="col" class="text-center">performance_rating_id</th>
             <th scope="col" class="text-center">collections_collection_id</th>
+            <th scope="col" class="text-center">Collections(name)</th>
             <th scope="col" class="text-center">performances_albums_album_id</th>
-            <th scope="col" class="text-center">rating</th>
+            <th scope="col" class="text-center">Albums(name)</th>
+            <th scope="col" class="text-center"><i class="bi bi-star" style="color: gold"></i> rating</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
     </thead>
@@ -16,10 +18,12 @@
                     <input type="text" class="form-control form-control-lg form-control-block"
                         placeholder="collection name" name="input-perfrateColName">
                 </td>
+                <td></td>
                 <td class="text-center">
                     <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
                         name="input-perfrateAlbName">
                 </td>
+                <td></td>
                 <td class="text-center">
                     <input type="text" class="form-control form-control-lg form-control-block" placeholder="rating"
                         name="input-perfrateRating">
@@ -34,7 +38,9 @@
         <tr>
             <th scope="row" class="text-center">{{this.performance_rating_id}}</th>
             <td class="text-center">{{this.collections_collection_id}}</td>
+            <td class="text-center">{{this.ColName}}</td>
             <td class="text-center">{{this.performances_albums_album_id}}</td>
+            <td class="text-center">{{this.AlbName}}</td>
             <td class="text-center">{{this.rating}}</td>
             <td class="text-center">
                 <a href="#" type="button" class="btn btn-warning btn-small"> <i class="bi bi-pencil-square"></i>

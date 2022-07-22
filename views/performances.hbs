@@ -3,23 +3,30 @@
         <tr>
             <th scope="col" class="text-center">performance_id</th>
             <th scope="col" class="text-center">musician_id</th>
+            <th scope="col" class="text-center">Musicians('name')</th>
             <th scope="col" class="text-center">album_id</th>
+            <th scope="col" class="text-center">Albums('name')</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <th scope="row" class="text-center"></th>
-            <form class="px-4 py-3" action="/" method="POST">
+
+            <form class="px-4 py-3" action="/performances" method="POST">
                 <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block"
-                        placeholder="musician name" name="input-perfMusName"> -- To do - use jQuery bootstrap
-                    multiselect dropdown
+                    <input type="text" class="form-control form-control-sm form-control-block" placeholder="first name"
+                        name="input-perfMusFn">
+                    <input type="text" class="form-control form-control-sm form-control-block" placeholder="last name"
+                        name="input-perfMusLn">
+                    -- To do - use jQuery bootstrap multiselect dropdown
                 </td>
+                <td></td>
                 <td class="text-center">
                     <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
                         name="input-perfAlbName">
                 </td>
+                <td></td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
                         Performance</button>
@@ -30,7 +37,9 @@
         <tr>
             <th scope="row" class="text-center">{{this.performance_id}}</th>
             <td class="text-center">{{this.musicians_musician_id}}</td>
+            <td class="text-center">{{this.first_name}} {{this.last_name}}</td>
             <td class="text-center">{{this.albums_album_id}}</td>
+            <td class="text-center">{{this.name}}</td>
             <td class="text-center">
                 <a href="#" type="button" class="btn btn-warning btn-small"> <i class="bi bi-pencil-square"></i>
                     Edit</a>

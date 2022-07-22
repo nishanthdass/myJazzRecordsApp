@@ -5,6 +5,7 @@ const collectionsctrl = require('../controllers/collectionsCtrl')
 
 router.get('/', collectionsctrl.view);
 router.post('/', collectionsctrl.insert);
+// router.get('/:id', collectionsctrl.edit);
 
 
 module.exports = router;
