@@ -4,7 +4,8 @@ const db = require('../../database/db-connector')
 
 
 exports.view = (req, res) => {
-    let query1 = 'Select * from Listeners;';
+    let query1 = 'SELECT Listeners.listeners_id, Listeners.name, Listeners.email, Listeners.collections_collection_id, Collections.name AS collection_name FROM Listeners INNER JOIN Collections ON Listeners.collections_collection_id = Collections.collection_id;';
+
     db.pool.query(query1, function (error, rows, fields) {
         if (!error) {
             res.render('listeners', { data: rows });
@@ -39,6 +40,29 @@ exports.insert = (req, res) => {
         else {
             console.log('database error: \n', console.log(error));
             res.sendStatus(400);
+        }
+    })
+};
+
+exports.edit = (req, res) => {
+    let dataId = req.query.listeditId;
+    let dataName = req.query.listeditName;
+    let dataEmail = req.query.listediEmail;
+
+    // console.log(dataId, dataName, dataEmail)
+    let listId = parseInt(dataId)
+
+    if (isNaN(listId)) {
+        listId = 'NULL'
+    }
+
+    let query1 = `UPDATE Listeners SET name = '${dataName}', email = '${dataEmail}' WHERE listeners_id = ${listId}`;
+    db.pool.query(query1, function (error, rows, fields) {
+        if (!error) {
+            res.redirect('/listeners');
+        }
+        else {
+            console.log('database error: \n', console.log(error))
         }
     })
 };

@@ -6,7 +6,9 @@
             <th scope="col" class="text-center">recording_year</th>
             <th scope="col" class="text-center">release_year</th>
             <th scope="col" class="text-center">genres_genre_id</th>
+            <th scope="col" class="text-center">Genres(name)</th>
             <th scope="col" class="text-center">bandmember_id</th>
+            <th scope="col" class="text-center">Musicians(first + last name)</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
     </thead>
@@ -30,12 +32,14 @@
                     <input type="text" class="form-control form-control-lg form-control-block" placeholder="genre name"
                         name="input-albGen">
                 </td>
+                <td></td>
                 <td class="text-center">
                     <input type="text" class="form-control form-control-sm form-control-block" placeholder="first name"
                         name="input-albBlFn">
                     <input type="text" class="form-control form-control-sm form-control-block" placeholder="last name"
                         name="input-albBlLn">
                 </td>
+                <td></td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
                         Album</button>
@@ -49,10 +53,13 @@
             <td class="text-center">{{this.recording_year}}</td>
             <td class="text-center">{{this.release_year}}</td>
             <td class="text-center">{{this.genres_genre_id}}</td>
+            <td class="text-center">{{this.genname}}</td>
             <td class="text-center">{{this.bandmember_id}}</td>
+            <td class="text-center">{{this.first_name}} {{this.last_name}}</td>
             <td class="text-center">
-                <a href="#" type="button" class="btn btn-warning btn-small"> <i class="bi bi-pencil-square"></i>
-                    Edit</a>
+                <a type="button" class="open-editAlb btn btn-warning btn-small" data-toggle="modal"
+                    data-id='{"id":{{this.album_id}},"name":"{{this.name}}", "recording_year":"{{this.recording_year}}","release_year":"{{this.release_year}}", "genre_id":"{{this.genres_genre_id}}", "genre_name":"{{this.genname}}","bandmem_id":"{{this.bandmember_id}}","first_name":"{{this.first_name}}","last_name":"{{this.last_name}}"}'
+                    title="Edit this item" href="#renderEdit"><i class="bi bi-pencil-square"></i> Edit</a>
                 <a href="#" type="button" class="btn btn-danger btn-small"> <i class="bi bi-trash3-fill"></i> Delete</a>
                 <a href="#" type="button" class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</a>
             </td>
@@ -60,3 +67,58 @@
         {{/each}}
     </tbody>
 </table>
+
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="renderEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Albums</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="px-4 py-3" action="/albums/editalb" method="GET">
+                <div class="modal-body">
+                    id
+                    <input type="text" class="form-control form-control-lg" name="albeditId" id="albeditId" value=""
+                        style="background: #D3D3D3;" readonly />
+                </div>
+                <div class="modal-body">
+                    name
+                    <input type="text" class="form-control form-control-lg" name="albeditName" id="albeditName"
+                        value="" />
+                </div>
+                <div class="modal-body">
+                    recording year
+                    <input type="text" class="form-control form-control-lg" name="albeditRec" id="albeditRec"
+                        value="" />
+                </div>
+                <div class="modal-body">
+                    release year
+                    <input type="text" class="form-control form-control-lg" name="albeditRel" id="albeditRel"
+                        value="" />
+                </div>
+                <div class="modal-body">
+                    genre
+                    <input type="text" class="form-control form-control-lg" name="albeditgenre" id="albeditgenre"
+                        value="" />
+                </div>
+                <div class="modal-body">
+                    Musician name
+                    <input type="text" class="form-control form-control-lg" name="albeditfn" id="albeditfn" value="" />
+                    <input type="text" class="form-control form-control-lg" name="albeditln" id="albeditln" value="" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>

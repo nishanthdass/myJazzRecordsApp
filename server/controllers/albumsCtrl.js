@@ -4,7 +4,7 @@ const db = require('../../database/db-connector')
 
 
 exports.view = (req, res) => {
-    let query1 = 'Select * from Albums;';
+    let query1 = 'SELECT Albums.album_id, Albums.name, Albums.recording_year, Albums.release_year, Albums.genres_genre_id, Genres.name AS genname, Albums.bandmember_id, Musicians.first_name, Musicians.last_name FROM Albums INNER JOIN Genres ON Albums.genres_genre_id = Genres.genre_id INNER JOIN Musicians ON Albums.bandmember_id = Musicians.musician_id;';
     db.pool.query(query1, function (error, rows, fields) {
         if (!error) {
             res.render('albums', { data: rows });
@@ -48,6 +48,44 @@ exports.insert = (req, res) => {
                 error: 'Not found'
             })
 
+        }
+    })
+};
+
+exports.edit = (req, res) => {
+    let dataId = req.query.albeditId;
+    let dataName = req.query.albeditName;
+    let dataRecyr = req.query.albeditRec;
+    let dataRelyr = req.query.albeditRel;
+    let dataGenrename = req.query.albeditgenre;
+    let dataMusfn = req.query.albeditfn;
+    let dataMusln = req.query.albeditln;
+
+    // console.log(dataId, dataName, dataEmail)
+    let albId = parseInt(dataId)
+    if (isNaN(albId)) {
+        albId = 'NULL'
+    }
+
+    let albRec = parseInt(dataRecyr)
+
+    if (isNaN(albRec)) {
+        albRec = 'NULL'
+    }
+
+    let albRel = parseInt(dataRelyr)
+
+    if (isNaN(albRel)) {
+        albRel = 'NULL'
+    }
+
+    let query1 = `UPDATE Albums SET name = "${dataName}", recording_year = ${albRec}, release_year = ${albRel}, bandmember_id = (SELECT musician_id from Musicians where first_name = '${dataMusfn}' and last_name = '${dataMusln}'), genres_genre_id = (SELECT genre_id from Genres WHERE name = '${dataGenrename}') WHERE album_id = ${albId}`;
+    db.pool.query(query1, function (error, rows, fields) {
+        if (!error) {
+            res.redirect('/albums');
+        }
+        else {
+            console.log('database error: \n', console.log(error))
         }
     })
 };

@@ -38,31 +38,22 @@ exports.insert = (req, res) => {
 };
 
 exports.edit = (req, res) => {
-    console.log(req)
-    res.redirect('/');
-    // let query1 = `Select * from Collections WHERE collection_id = ;`;
-    // db.pool.query(query1, function (error, rows, fields) {
-    //     if (!error) {
-    //         res.render('home', { data: rows });
-    //     }
-    //     else {
-    //         console.log('database error: \n', console.log(err))
-    //     }
-    // })
-};
+    let dataId = req.query.coleditId;
+    let dataName = req.query.coleditName;
 
-// exports.view = (req, res) => {
-//     db.pool.getConnection((err, Connection) => {
-//         if (err) throw err;
-//         console.log('Connected as ID ' + Connection.threadId);
-//         Connection.query('SELECT * FROM Collections', (err, rows) => {
-//             Connection.release();
-//             if (!err) {
-//                 res.render('home', { rows });
-//             } else {
-//                 console.log(err);
-//             }
-//             console.log('The Data from collections table: \n', rows);
-//         });
-//     });
-// };
+    let colId = parseInt(dataId)
+
+    if (isNaN(colId)) {
+        colId = 'NULL'
+    }
+
+    let query1 = `UPDATE Collections SET name = "${dataName}" WHERE collection_id = ${colId}`;
+    db.pool.query(query1, function (error, rows, fields) {
+        if (!error) {
+            res.redirect('/');
+        }
+        else {
+            console.log('database error: \n', console.log(error))
+        }
+    })
+};

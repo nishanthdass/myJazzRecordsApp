@@ -2,7 +2,7 @@
 // https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
 
 $(document).on("click", ".open-editCol", function () {
-    var myBookId = $(this).data('id');
-    $(".modal-body #coleditId").val(myBookId.id);
-    $(".modal-body #coleditName").val(myBookId.name);
+    var myCol = $(this).data('id');
+    $(".modal-body #coleditId").val(myCol.id);
+    $(".modal-body #coleditName").val(myCol.name);
 });
