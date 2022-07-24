@@ -5,5 +5,6 @@ const genresctrl = require('../controllers/genresCtrl')
 
 router.get('/genres', genresctrl.view);
 router.post('/genres', genresctrl.insert);
+router.get('/genres/editgen', genresctrl.edit);
 
 module.exports = router;

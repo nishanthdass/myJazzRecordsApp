@@ -1,3 +1,5 @@
+Need to allow for DB user to inserct a album into a collection without having Musicians associated with said Album(aside
+from band leader)
 <table class="table table-dark table-striped table-bordered">
     <thead>
         <tr>
@@ -13,7 +15,7 @@
     <tbody>
         <tr>
             <th scope="row" class="text-center"></th>
-            <form class="px-4 py-3" action="/" method="POST">
+            <form class="px-4 py-3" action="/perfratings" method="POST">
                 <td class="text-center">
                     <input type="text" class="form-control form-control-lg form-control-block"
                         placeholder="collection name" name="input-perfrateColName">
@@ -43,8 +45,9 @@
             <td class="text-center">{{this.AlbName}}</td>
             <td class="text-center">{{this.rating}}</td>
             <td class="text-center">
-                <a href="#" type="button" class="btn btn-warning btn-small"> <i class="bi bi-pencil-square"></i>
-                    Edit</a>
+                <a type="button" class="open-editPerfRating btn btn-warning btn-small" data-toggle="modal"
+                    data-id='{"id":{{this.performance_rating_id}}, "collections_collection_id":{{this.collections_collection_id}}, "ColName":"{{this.ColName}}", "performances_albums_album_id":"{{this.performances_albums_album_id}}","AlbName":"{{this.AlbName}}", "rating":"{{this.rating}}"}'
+                    title="Edit this item" href="#renderEdit"><i class="bi bi-pencil-square"></i> Edit</a>
                 <a href="#" type="button" class="btn btn-danger btn-small"> <i class="bi bi-trash3-fill"></i> Delete</a>
                 <a href="#" type="button" class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</a>
             </td>
@@ -52,3 +55,59 @@
         {{/each}}
     </tbody>
 </table>
+
+
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="renderEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Performance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="px-4 py-3" action="/perfratings/editperfrating" method="GET">
+                <div class="modal-body">
+                    id
+                    <input type="text" class="form-control form-control-lg" name="perfrateditId" id="perfrateditId"
+                        value="" style="background: #D3D3D3;" readonly />
+                </div>
+                <div class="modal-body">
+                    collection id
+                    <input type="text" class="form-control form-control-lg" name="perfrateditColId"
+                        id="perfrateditColId" value="" style="background: #D3D3D3;" readonly />
+                </div>
+                <div class="modal-body">
+                    collection name
+                    <input type="text" class="form-control form-control-lg" name="perfrateditColName"
+                        id="perfrateditColName" value="" />
+                </div>
+                <div class="modal-body">
+                    performances_albums_album_id
+                    <input type="text" class="form-control form-control-lg" name="perfrateditAlbId"
+                        id="perfrateditAlbId" value="" style="background: #D3D3D3;" readonly />
+                </div>
+                <div class="modal-body">
+                    album name
+                    <input type="text" class="form-control form-control-lg" name="perfrateditAlbName"
+                        id="perfrateditAlbName" value="" />
+                </div>
+                <div class="modal-body">
+                    rating
+                    <input type="text" class="form-control form-control-lg" name="perfratRating" id="perfratRating"
+                        value="" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>

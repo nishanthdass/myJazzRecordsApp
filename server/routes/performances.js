@@ -5,5 +5,6 @@ const performancesctrl = require('../controllers/performancesCtrl')
 
 router.get('/performances', performancesctrl.view);
 router.post('/performances', performancesctrl.insert);
+router.get('/performances/editperf', performancesctrl.edit);
 
 module.exports = router;

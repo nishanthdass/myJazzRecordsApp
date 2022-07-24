@@ -41,11 +41,10 @@ exports.insert = (req, res) => {
             res.redirect('/albums');
         }
         else {
-            console.log('database error: \n', console.log(error));
-
+            console.log(error.sql)
             res.status(400).send({
                 status: 400,
-                error: 'Not found'
+                error: error.sql
             })
 
         }
@@ -85,7 +84,12 @@ exports.edit = (req, res) => {
             res.redirect('/albums');
         }
         else {
-            console.log('database error: \n', console.log(error))
+            console.log(error.sql)
+            res.status(400).send({
+                status: 400,
+                error: error.sql
+            })
+
         }
     })
 };

@@ -36,3 +36,27 @@ exports.insert = (req, res) => {
         }
     })
 };
+
+
+exports.edit = (req, res) => {
+
+    let dataId = req.query.geneditId;
+    let dataName = req.query.geneditName;
+
+    console.log(dataId, dataName)
+    let genId = parseInt(dataId)
+
+    if (isNaN(genId)) {
+        genId = 'NULL'
+    }
+
+    let query1 = `UPDATE Genres SET name = "${dataName}" WHERE genre_id = ${genId}`;
+    db.pool.query(query1, function (error, rows, fields) {
+        if (!error) {
+            res.redirect('/genres');
+        }
+        else {
+            console.log('database error: \n', console.log(error))
+        }
+    })
+};

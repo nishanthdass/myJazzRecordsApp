@@ -32,7 +32,32 @@ exports.insert = (req, res) => {
                 status: 400,
                 error: 'Not found'
             })
+        }
+    })
+};
 
+exports.edit = (req, res) => {
+    let dataId = req.query.musceditId;
+    let dataMuscFn = req.query.musceditFn;
+    let dataMuscLn = req.query.musceditLn;
+    let dataMuscInst = req.query.musceditInst;
+
+    console.log(dataId, dataMuscFn, dataMuscLn, dataMuscInst)
+
+
+    let muscId = parseInt(dataId)
+    if (isNaN(muscId)) {
+        muscId = 'NULL'
+    }
+
+
+    let query1 = `UPDATE Musicians SET first_name = "${dataMuscFn}", last_name = "${dataMuscLn}", instrument = "${dataMuscInst}" WHERE musician_id = ${muscId}`;
+    db.pool.query(query1, function (error, rows, fields) {
+        if (!error) {
+            res.redirect('/musicians');
+        }
+        else {
+            console.log('database error: \n', console.log(error))
         }
     })
 };
