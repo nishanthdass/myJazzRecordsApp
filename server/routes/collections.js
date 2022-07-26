@@ -4,8 +4,9 @@ const collectionsctrl = require('../controllers/collectionsCtrl')
 // const listenersctrl = require('../controllers/listenersCtrl')
 
 router.get('/', collectionsctrl.view);
-router.post('/', collectionsctrl.insert);
-router.get('/editcol', collectionsctrl.edit);
-
+router.post('/add-collection', collectionsctrl.insert);
+// router.get('/editcol', collectionsctrl.edit);
+router.put('/put-person-ajax', collectionsctrl.edit)
+router.delete('/delcol', collectionsctrl.delete);
 
 module.exports = router;

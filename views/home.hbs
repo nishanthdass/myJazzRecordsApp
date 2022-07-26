@@ -1,79 +1,41 @@
-<div class="col-8 pb-2">
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Insert Collection
-        </button>
-        <div class="container-fluid">
-            <ul class=" dropdown-nav__container dropdown-menu">
-                <form class="px-4 py-3" action="/" method="POST">
-                    <li class="menu-item">
-                        <input type="text" class="form-control form-control-lg" placeholder="new collection name"
-                            name="input-colname">
-                    </li>
-                    <li class="menu-item">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </li>
-                </form>
-            </ul>
-        </div>
-    </div>
-    <br>
-    <div>
-        <select>
-            {{#each data}}
-            <option value="{{@key}}" {{{isSelected ./setCollectionId @key}}}>
-                {{this.collection_id}}
-            </option>
-            {{/each}}
-        </select>
-        <select>
-            {{#each data}}
-            <option value="{{@key}}" {{{isSelected ./setCollectionName @key}}}>
-                {{this.name}}
-            </option>
-            {{/each}}
-        </select>
-        Use Selectpicker from Bootstrap-select to make a search dropdown box
-        <select class="selectpicker" data-live-search="true">
-            <option data-tokens="ketchup mustard">Hot Dog, Fries and a Soda</option>
-            <option data-tokens="mustard">Burger, Shake and a Smile</option>
-            <option data-tokens="frosting">Sugar, Spice and all things nice</option>
-        </select>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-    </div>
+
+<div>
+    <form id="add-collection" class="px-4 py-3">
+        <input type="text" class="form-control form-control-lg form-control-block" placeholder="collection name"
+            name="input-colName" id="input-colName">
+        <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
+            Collection</button>
+    </form>
 </div>
-<table class="table table-dark table-striped table-bordered">
+
+
+
+<table class="table table-dark table-striped table-bordered" id="collection-table">
     <thead>
         <tr>
-            <th scope="col" class="text-center">id</th>
-            <th scope="col" class="text-center">name</th>
-            <th scope="col" class="text-center">options</th>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Action</th>
         </tr>
     </thead>
+
     <tbody>
-        <tr>
-            <th scope="row" class="text-center"></th>
-            <form class="px-4 py-3" action="/" method="POST">
-                <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block"
-                        placeholder="collection name" name="input-colName">
-                </td>
-                <td class="text-center">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
-                        Collection</button>
-                </td>
-            </form>
-        </tr>
         {{#each data}}
-        <tr>
-            <th scope="row" class="text-center">{{this.collection_id}}</th>
-            <td class="text-center">{{this.name}}</td>
-            <td class="text-center">
-                <a type="button" class="open-editCol btn btn-warning btn-small" data-toggle="modal"
+        <tr data-value={{this.collection_id}}>
+            <td>{{this.collection_id}}</td>
+            <td>{{this.name}}</td>
+            <td>
+                <button class="open-editCol btn btn-warning btn-small" data-toggle="modal"
                     data-id='{"id":{{this.collection_id}},"name":"{{this.name}}"}' title="Edit this item"
-                    href="#renderEditCol"><i class="bi bi-pencil-square"></i> Edit</a>
-                <a href="#" type="button" class="btn btn-danger btn-small"> <i class="bi bi-trash3-fill"></i> Delete</a>
-                <a href="#" type="button" class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</a>
+                    href="#renderEditCol" id="editele"><i class="bi bi-pencil-square"></i> Edit</button>
+                <button onclick="deletePerson({{this.collection_id}})" class="btn btn-danger btn-small"><i
+                        class="bi bi-trash3-fill"></i>Delete</button>
+                <button class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</button>
             </td>
         </tr>
         {{/each}}
@@ -84,6 +46,51 @@
 
 <!-- Edit Modal -->
 <div class="modal fade" id="renderEditCol" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Collections</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="update-collection" class="px-4 py-3">
+                <div class="modal-body">
+                    id
+                    <input type="text" class="form-control form-control-lg" name="coleditId" id="coleditId" value=""
+                        style="background: #D3D3D3;" readonly />
+                </div>
+                <div class="modal-body">
+                    name
+                    <input type="text" class="form-control form-control-lg" name="coleditName" id="coleditName"
+                        value="" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Edit Modal -->
+{{!-- <div class="modal fade" id="renderEditCol" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -113,4 +120,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}

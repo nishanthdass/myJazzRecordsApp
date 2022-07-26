@@ -10,7 +10,7 @@ exports.view = (req, res) => {
             res.render('albums', { data: rows });
         }
         else {
-            console.log('database error: \n', console.log(err))
+            console.log('database error: \n', console.log(error))
         }
     })
 };

@@ -21,7 +21,6 @@ exports.insert = (req, res) => {
     //https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
 
     let data = req.body;
-    console.log(data)
 
     let perfRating = parseInt(data['input-perfrateRating'])
 

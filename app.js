@@ -2,25 +2,26 @@ const express = require('express');   // We are using the express library for th
 const expHandBar = require('express-handlebars');
 const bodyparser = require('body-parser');
 const db = require('./database/db-connector')
-
-require('dotenv').config()
-
 const app = express();            // We need to instantiate an express object to interact with the server in our code
-PORT = 51213;                 // Set a port number at the top so it's easy to change in the future
-
-// Body-parser middleware
-app.use(bodyparser.urlencoded({ extended: false }));
-app.use(bodyparser.json());
-
-// access static files
-app.use(express.static('public'));
+PORT = 51214;                 // Set a port number at the top so it's easy to change in the future
 
 // Handlebars init
 // https://stackoverflow.com/questions/69959820/typeerror-exphbs-is-not-a-function
 app.engine('.hbs', expHandBar.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
+require('dotenv').config()
 
+// Body-parser middleware
+// app.use(bodyparser.urlencoded({ extended: false }));
+// app.use(bodyparser.json());
+
+// app.js - SETUP section
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+// access static files
+app.use(express.static('public'));
 
 
 // Handlebars Helpers 
@@ -31,19 +32,6 @@ const hbs = expHandBar.create({});
 hbs.handlebars.registerHelper('isSelected', function (value, key) {
     return value === key ? 'selected' : '';
 });
-
-hbs.handlebars.registerHelper('changeColor', function (text, options) {
-    text = hbs.handlebars.Utils.escapeExpression(text);
-    console.log(text)
-    if (options.hash.color === "red") {
-        return new hbs.handlebars.SafeString("<span class='redText'>" + text + "</span>");
-    } else if (options.hash.color === "blue") {
-        return new hbs.handlebars.SafeString("<span class='blueText'>" + text + "</span>");
-    } else {
-        return new hbs.handlebars.SafeString("<span class='greenText'>" + text + "</span>");
-    }
-});
-
 
 
 
