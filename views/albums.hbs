@@ -1,65 +1,84 @@
-<table class="table table-dark table-striped table-bordered">
+{{!-- <tr>
+    <th scope="row" class="text-center"></th>
+    <form class="px-4 py-3" action="/albums" method="POST">
+        <td class="text-center">
+            <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
+                name="input-albName">
+        </td>
+        <td class="text-center">
+            <input type="text" class="form-control form-control-lg form-control-block" placeholder="recording year"
+                name="input-albRec">
+        </td>
+        <td class="text-center">
+            <input type="text" class="form-control form-control-lg form-control-block" placeholder="release year"
+                name="input-albRel">
+        </td>
+        <td class="text-center">
+            <input type="text" class="form-control form-control-lg form-control-block" placeholder="genre name"
+                name="input-albGen">
+        </td>
+        <td></td>
+        <td class="text-center">
+            <input type="text" class="form-control form-control-sm form-control-block" placeholder="first name"
+                name="input-albBlFn">
+            <input type="text" class="form-control form-control-sm form-control-block" placeholder="last name"
+                name="input-albBlLn">
+        </td>
+        <td></td>
+        <td class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
+                Album</button>
+        </td>
+    </form>
+</tr> --}}
+
+<div>
+    <form id="add-album" class="px-4 py-3">
+        <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
+            name="input-albName" id="input-albName">
+        <input type="text" class="form-control form-control-lg form-control-block" placeholder="recording year"
+            name="input-albRec" id="input-albRec">
+        <input type="text" class="form-control form-control-lg form-control-block" placeholder="release year"
+            name="input-albRel" id="input-albRel">
+        <input type="text" class="form-control form-control-lg form-control-block" placeholder="genre name"
+            name="input-albGen" id="input-albGen">
+        <input type="text" class="form-control form-control-lg form-control-block" placeholder="first name"
+            name="input-albBlFn" id="input-albBlFn">
+        <input type="text" class="form-control form-control-lg form-control-block" placeholder="last name"
+            name="input-albBlLn" id="input-albBlLn">
+        <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
+            Album</button>
+    </form>
+</div>
+
+
+<table class="table table-dark table-striped table-bordered" id="albums-table">
     <thead>
         <tr>
-            <th scope="col" class="text-center">album_id</th>
-            <th scope="col" class="text-center">name</th>
-            <th scope="col" class="text-center">recording_year</th>
-            <th scope="col" class="text-center">release_year</th>
-            <th scope="col" class="text-center">genres_genre_id</th>
-            <th scope="col" class="text-center">Genres(name)</th>
-            <th scope="col" class="text-center">bandmember_id</th>
-            <th scope="col" class="text-center">bandleader name</th>
-            <th scope="col" class="text-center">Action</th>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row" class="text-center"></th>
-            <form class="px-4 py-3" action="/albums" method="POST">
-                <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
-                        name="input-albName">
-                </td>
-                <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block"
-                        placeholder="recording year" name="input-albRec">
-                </td>
-                <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block"
-                        placeholder="release year" name="input-albRel">
-                </td>
-                <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="genre name"
-                        name="input-albGen">
-                </td>
-                <td></td>
-                <td class="text-center">
-                    <input type="text" class="form-control form-control-sm form-control-block" placeholder="first name"
-                        name="input-albBlFn">
-                    <input type="text" class="form-control form-control-sm form-control-block" placeholder="last name"
-                        name="input-albBlLn">
-                </td>
-                <td></td>
-                <td class="text-center">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
-                        Album</button>
-                </td>
-            </form>
-        </tr>
         {{#each data}}
-        <tr>
-            <th scope="row" class="text-center">{{this.album_id}}</th>
-            <td class="text-center">{{this.name}}</td>
-            <td class="text-center">{{this.recording_year}}</td>
-            <td class="text-center">{{this.release_year}}</td>
-            <td class="text-center">{{this.genres_genre_id}}</td>
-            <td class="text-center">{{this.genname}}</td>
-            <td class="text-center">{{this.bandmember_id}}</td>
-            <td class="text-center">{{this.first_name}} {{this.last_name}}</td>
-            <td class="text-center">
+        <tr data-value={{this.album_id}}>
+            <td>{{this.album_id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.recording_year}}</td>
+            <td>{{this.release_year}}</td>
+            <td>{{this.genres_genre_id}}</td>
+            <td>{{this.genname}}</td>
+            <td>{{this.bandleader_id}}</td>
+            <td>{{this.first_name}}</td>
+            <td>{{this.last_name}}</td>
+            <td>
                 <a type="button" class="open-editAlb btn btn-warning btn-small" data-toggle="modal"
                     data-id='{"id":{{this.album_id}},"name":"{{this.name}}", "recording_year":"{{this.recording_year}}","release_year":"{{this.release_year}}", "genre_id":"{{this.genres_genre_id}}", "genre_name":"{{this.genname}}","bandmem_id":"{{this.bandmember_id}}","first_name":"{{this.first_name}}","last_name":"{{this.last_name}}"}'
-                    title="Edit this item" href="#renderEdit"><i class="bi bi-pencil-square"></i> Edit</a>
+                    title="Edit this item" href="#renderEditAlb"><i class="bi bi-pencil-square"></i> Edit</a>
                 <a href="#" type="button" class="btn btn-danger btn-small"> <i class="bi bi-trash3-fill"></i> Delete</a>
                 <a href="#" type="button" class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</a>
             </td>
@@ -71,7 +90,7 @@
 
 
 <!-- Edit Modal -->
-<div class="modal fade" id="renderEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="renderEditAlb" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -81,7 +100,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="px-4 py-3" action="/albums/editalb" method="GET">
+            <form id="update-album" class="px-4 py-3">
                 <div class="modal-body">
                     id
                     <input type="text" class="form-control form-control-lg" name="albeditId" id="albeditId" value=""

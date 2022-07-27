@@ -34,7 +34,7 @@ if (addColForm) {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
 
                 // Add the new data to the table
-                addRowToTable(xhttp.response);
+                addRowToColTable(xhttp.response);
 
                 // Clear the input fields for another transaction
                 inputColName.value = '';
@@ -49,7 +49,7 @@ if (addColForm) {
 };
 
 
-addRowToTable = (data) => {
+addRowToColTable = (data) => {
     // console.log(data)
 
     // Get a reference to the current table on the page and clear it out.
@@ -150,6 +150,7 @@ $(document).on("click", ".open-editCol", function () {
 });
 
 
+
 // Get the objects we need to modify
 let updateCollectionForm = document.getElementById('update-collection');
 
@@ -160,6 +161,7 @@ if (updateCollectionForm) {
 
         // Prevent the form from submitting
         e.preventDefault();
+        $('#renderEditCol').modal('hide');
 
         // Get form fields we need to get data from
         let inputColId = document.getElementById("coleditId");
@@ -182,11 +184,11 @@ if (updateCollectionForm) {
             collectionName: colNameValue,
         }
 
-        console.log(data)
+        // console.log(data)
 
         // Setup our AJAX request
         var xhttp = new XMLHttpRequest();
-        xhttp.open("PUT", "/put-person-ajax", true);
+        xhttp.open("PUT", "/edit-collection", true);
         xhttp.setRequestHeader("Content-type", "application/json");
 
         // Tell our AJAX request how to resolve
@@ -194,8 +196,8 @@ if (updateCollectionForm) {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
 
                 // Add the new data to the table
-                console.log(colIdValue)
-                updateRow(xhttp.response, colIdValue, colNameValue);
+                // console.log(colIdValue)
+                updateCollectionRow(xhttp.response, colIdValue, colNameValue);
 
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -209,7 +211,10 @@ if (updateCollectionForm) {
 }
 
 
-function updateRow(data, personID, colName) {
+
+
+
+function updateCollectionRow(data, personID, colName) {
     let parsedData = JSON.parse(data);
 
     let table = document.getElementById("collection-table");
@@ -265,42 +270,6 @@ function updateRow(data, personID, colName) {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //DELETE

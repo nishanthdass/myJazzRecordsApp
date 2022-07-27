@@ -1,4 +1,5 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+{{!--
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
 
 
 <div>
@@ -32,7 +33,8 @@
             <td>
                 <button class="open-editCol btn btn-warning btn-small" data-toggle="modal"
                     data-id='{"id":{{this.collection_id}},"name":"{{this.name}}"}' title="Edit this item"
-                    href="#renderEditCol" id="editele"><i class="bi bi-pencil-square"></i> Edit</button>
+                    href="#renderEditCol" id="editele"><i class="bi bi-pencil-square"></i>
+                    Edit</button>
                 <button onclick="deletePerson({{this.collection_id}})" class="btn btn-danger btn-small"><i
                         class="bi bi-trash3-fill"></i>Delete</button>
                 <button class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</button>

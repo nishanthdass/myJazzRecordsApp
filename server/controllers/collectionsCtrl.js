@@ -21,7 +21,7 @@ exports.insert = function (req, res) {
     // console.log(data)
 
 
-    query1 = `INSERT INTO Collections (name) VALUES ('${data.name}')`;
+    query1 = `INSERT INTO Collections (name) VALUES ("${data.name}")`;
 
     db.pool.query(query1, function (error, rows, fields) {
         // console.log(rows)
@@ -88,7 +88,7 @@ exports.edit = function (req, res, next) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
-                    console.log(rows)
+                    // console.log(rows)
                     res.send(rows);
                 }
             })

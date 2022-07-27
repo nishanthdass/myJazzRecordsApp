@@ -4,8 +4,9 @@ const listenersctrl = require('../controllers/listenersCtrl')
 // const listenersCtrl = require('../controllers/listenersCtrl')
 
 router.get('/listeners', listenersctrl.view);
-router.post('/listeners', listenersctrl.insert);
-router.get('/listeners/editlist', listenersctrl.edit);
+router.post('/listeners/add-listener', listenersctrl.insert);
+router.put('/listeners/edit-listeners', listenersctrl.edit);
+router.delete('/listeners/delete-listeners', listenersctrl.delete);
 
 
 module.exports = router;
