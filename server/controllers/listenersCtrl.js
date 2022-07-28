@@ -4,7 +4,7 @@ const db = require('../../database/db-connector')
 
 
 exports.view = (req, res) => {
-    let query1 = 'SELECT Listeners.listeners_id, Listeners.name, Listeners.email, Listeners.collections_collection_id, Collections.name AS collection_name FROM Listeners INNER JOIN Collections ON Listeners.collections_collection_id = Collections.collection_id;';
+    let query1 = 'SELECT Listeners.listeners_id, Listeners.name, Listeners.email, Listeners.collections_collection_id, Collections.name AS collection_name FROM Listeners LEFT JOIN Collections ON Listeners.collections_collection_id = Collections.collection_id;';
 
     db.pool.query(query1, function (error, rows, fields) {
         if (!error) {
@@ -55,7 +55,7 @@ exports.insert = function (req, res) {
         }
         else {
             // If there was no error, perform a SELECT * on bsg_people
-            query2 = `SELECT Listeners.listeners_id, Listeners.name, Listeners.email, Listeners.collections_collection_id, Collections.name AS collection_name FROM Listeners INNER JOIN Collections ON Listeners.collections_collection_id = Collections.collection_id;`;
+            query2 = `SELECT Listeners.listeners_id, Listeners.name, Listeners.email, Listeners.collections_collection_id, Collections.name AS collection_name FROM Listeners LEFT JOIN Collections ON Listeners.collections_collection_id = Collections.collection_id;`;
             db.pool.query(query2, function (error, rows, fields) {
 
                 // If there was an error on the second query, send a 400
@@ -114,7 +114,7 @@ exports.edit = function (req, res, next) {
     // let query1 = `UPDATE Listeners SET name = '${dataName}', email = '${dataEmail}' WHERE listeners_id = ${listId}`;
 
     query1 = `UPDATE Listeners SET name = ?, email = ? WHERE listeners_id = ?`;
-    query2 = `SELECT Listeners.listeners_id, Listeners.name, Listeners.email, Listeners.collections_collection_id, Collections.name AS collection_name FROM Listeners INNER JOIN Collections ON Listeners.collections_collection_id = Collections.collection_id;`;
+    query2 = `SELECT Listeners.listeners_id, Listeners.name, Listeners.email, Listeners.collections_collection_id, Collections.name AS collection_name FROM Listeners LEFT JOIN Collections ON Listeners.collections_collection_id = Collections.collection_id;`;
 
     // Run the 1st query
     db.pool.query(query1, [data.listenerName, data.listenerEmail, listenerId], function (error, rows, fields) {

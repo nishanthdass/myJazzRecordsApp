@@ -5,6 +5,7 @@ const albumsCtrl = require('../controllers/albumsCtrl')
 
 router.get('/albums', albumsCtrl.view);
 router.post('/albums/add-album', albumsCtrl.insert);
-router.get('/albums/editalb', albumsCtrl.edit);
+router.put('/albums/edit-album', albumsCtrl.edit);
+router.delete('/albums/delete-album', albumsCtrl.delete);
 
 module.exports = router;

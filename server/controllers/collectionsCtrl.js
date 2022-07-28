@@ -167,8 +167,6 @@ exports.delete = function (req, res, next) {
     console.log(personID)
 
 
-    let deleteBsg_Cert_People = `DELETE FROM bsg_cert_people WHERE pid = ?`;
-    let deleteBsg_People = `DELETE FROM bsg_people WHERE id = ?`;
     let query1 = `DELETE FROM Collections WHERE collection_id = ?`;
 
 
