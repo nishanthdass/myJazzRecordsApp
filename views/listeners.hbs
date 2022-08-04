@@ -35,6 +35,23 @@
     </form>
 </div>
 
+{{!-- <div class="container-sm bg-dark text-white sticky-top" id="search-bar">
+    <div class="row">
+        <div class="col-sm">
+            <div class="input-group top-50 start-50 translate-middle">
+                <span class="p-2">
+                    <i class="bi bi-search" style='font-size:26px;'></i>
+                </span>
+                <input class="form-control form-control-lg form-control-block w-25" id="tableSearch" type="text"
+                    placeholder="Search Listeners">
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+{{!-- <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Type something to search list items">
+--}}
+
 <table class="table table-dark table-striped table-bordered" id="listener-table">
     <thead>
         <tr>
@@ -43,10 +60,12 @@
                 {{@key}}
             </th>
             {{/each}}
-            <th>Action</th>
+            <th>
+                Action
+            </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="myTable">
         {{#each data}}
         <tr data-value={{this.listeners_id}}>
             <td>{{this.listeners_id}}</td>

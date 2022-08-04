@@ -56,8 +56,19 @@
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <div class="container-sm bg-dark text-white sticky-top" id="search-bar">
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="input-group top-50 start-50 translate-middle">
+                                    <span class="p-2">
+                                        <i class="bi bi-search" style='font-size:26px;'></i>
+                                    </span>
+                                    <input class="form-control form-control-lg form-control-block w-25" id="tableSearch"
+                                        type="text" placeholder="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -96,6 +107,7 @@
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
 
+    <script src="/ui_helper_scripts/main_helper.js"></script>
     <script src="/ui_helper_scripts/collection_helper.js"></script>
     <script src="/ui_helper_scripts/listener_helper.js"></script>
     <script src="/ui_helper_scripts/album_helper.js"></script>

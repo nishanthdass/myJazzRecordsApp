@@ -26,6 +26,17 @@ if (window.location.href == newURL) {
         });
     });
 }
+
+$(document).ready(function () {
+    $("#tableSearch").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});
+
+
 // ADD
 // Get the objects we need to modify
 let addListForm = document.getElementById('add-listener');

@@ -18,6 +18,14 @@
     margin-left: auto;
 }
 
+/* #search-bar {
+    border-radius: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-right: auto;
+    margin-left: auto;
+} */
+
 .bootstrap-select {
     max-width: auto;
 }
