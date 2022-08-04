@@ -161,7 +161,7 @@ if (updateCollectionForm) {
 
         // Prevent the form from submitting
         e.preventDefault();
-        $('#renderEditCol').modal('hide');
+        $(".modal-header button").click();
 
         // Get form fields we need to get data from
         let inputColId = document.getElementById("coleditId");
@@ -233,8 +233,6 @@ function updateCollectionRow(data, personID, colName) {
             // Reassign collectionName to our value we updated to
             td.innerHTML = parsedData[i - 1].name;
 
-            // let actioncell = updateRowIndex.getElementsByTagName("td")[2];
-            // console.log(actioncell)
             row.deleteCell(2)
 
             let actionCell = document.createElement("TD");
@@ -248,9 +246,9 @@ function updateCollectionRow(data, personID, colName) {
             editCell.className = "open-editCol btn btn-warning btn-small";
             editCell.setAttribute("data-toggle", "modal");
             editCell.setAttribute("href", "#renderEditCol");
-            console.log(personID, colName)
             editCell.setAttribute("data-id", "{'id':" + personID + ", 'name':" + '"' + colName + '"' + "}");
             $(editCell).modal('hide');
+
 
 
             deleteCell = document.createElement("button");
@@ -283,7 +281,8 @@ function deletePerson(personID) {
         id: personID
     };
 
-    // console.log(data)
+    deleteCell = document.getElementById('deleteColBtn')
+
 
     $.ajax({
         url: link,
@@ -292,8 +291,56 @@ function deletePerson(personID) {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             deleteRow(personID);
+        },
+        error: function (textStatus, errorThrown) {
+            let delColErrRes = textStatus.responseText
+            let parsedData = JSON.parse(delColErrRes);
+            let errorMsg = parsedData.sqlMessage
+
+
+            showCollectionDelError(errorMsg, personID)
+            Success = false;
         }
     });
+}
+
+
+function showCollectionDelError(delColErrRes, personID) {
+
+    let table = document.getElementById("collection-table");
+
+    for (let i = 0, row; row = table.rows[i]; i++) {
+        //iterate through rows
+        //rows would be accessed using the "row" variable assigned in the for loop
+        if (table.rows[i].getAttribute("data-value") == personID) {
+
+            // Get the location of the row where we found the matching person ID
+            let deleteRowIndex = table.getElementsByTagName("tr")[i];
+            console.log(deleteRowIndex)
+
+            // // Get td of collectionName value
+            let td = deleteRowIndex.getElementsByTagName("td")[2];
+            // console.log(td.getElementById('deleteColBtn'))
+
+            // // Reassign collectionName to our value we updated to
+            // td.innerHTML = parsedData[i - 1].name;
+
+            const bsPopover = new bootstrap.Popover(deleteRowIndex.querySelector('#deleteColBtn'), {
+                placement: 'left',
+                trigger: 'manual',
+                html: true
+            })
+
+            bsPopover._config.content = delColErrRes
+            bsPopover.show();
+            $(document).click(function (e) {
+                bsPopover.hide();
+            })
+
+        }
+    }
+
+
 }
 
 

@@ -43,9 +43,9 @@ if (addMuscForm) {
                 addRowToMuscTable(xhttp.response);
 
                 // Clear the input fields for another transaction
-                muscFnValue.value = '';
-                muscLnValue.value = '';
-                muscInstrValue.value = '';
+                inputMuscFn.value = '';
+                inputMuscLn.value = '';
+                inputMuscInstr.value = '';
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
                 console.log("There was an error with the input.")
@@ -170,7 +170,7 @@ if (updateMuscForm) {
 
         // Prevent the form from submitting
         e.preventDefault();
-        $('#renderEditMusc').modal('hide');
+        $(".modal-header button").click();
 
         // Get form fields we need to get data from
         let inputMuscId = document.getElementById("musceditId");
@@ -213,6 +213,7 @@ if (updateMuscForm) {
                 // Add the new data to the table
                 // console.log(colIdValue)
                 updateMuscRow(xhttp.response, musIdValue, musFnValue, musLnValue, musInstrValue);
+
 
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {

@@ -10,7 +10,7 @@ exports.view = (req, res) => {
             res.render('home', { data: rows });
         }
         else {
-            console.log('database error: \n', console.log(err))
+            console.log('database error: \n', console.log(error))
         }
     })
 };
@@ -66,11 +66,11 @@ exports.edit = function (req, res, next) {
 
     console.log(collectionId, data.collectionName)
 
-    queryUpdateWorld = `UPDATE Collections SET name = ? WHERE collection_id = ?`;
-    selectWorld = `SELECT * FROM Collections;`
+    query1 = `UPDATE Collections SET name = ? WHERE collection_id = ?`;
+    query2 = `SELECT * FROM Collections;`
 
     // Run the 1st query
-    db.pool.query(queryUpdateWorld, [data.collectionName, collectionId], function (error, rows, fields) {
+    db.pool.query(query1, [data.collectionName, collectionId], function (error, rows, fields) {
         if (error) {
 
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -82,7 +82,7 @@ exports.edit = function (req, res, next) {
         // table on the front-end
         else {
             // Run the second query
-            db.pool.query(selectWorld, function (error, rows, fields) {
+            db.pool.query(query2, function (error, rows, fields) {
 
                 if (error) {
                     console.log(error);
@@ -98,68 +98,6 @@ exports.edit = function (req, res, next) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// exports.edit = (req, res) => {
-//     let dataId = req.query.coleditId;
-//     let dataName = req.query.coleditName;
-//     // console.log(dataId, dataName)
-//     let colId = parseInt(dataId)
-
-//     if (isNaN(colId)) {
-//         colId = 'NULL'
-//     }
-
-//     let query1 = `UPDATE Collections SET name = "${dataName}" WHERE collection_id = ${colId}`;
-//     db.pool.query(query1, function (error, rows, fields) {
-//         if (!error) {
-//             res.redirect('/');
-//         }
-//         else {
-//             console.log('database error: \n', console.log(error))
-//         }
-//     })
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.delete = function (req, res, next) {
     console.log("works!!!")
     let data = req.body;
@@ -169,14 +107,9 @@ exports.delete = function (req, res, next) {
 
     let query1 = `DELETE FROM Collections WHERE collection_id = ?`;
 
-
-    // Run the 1st query
     db.pool.query(query1, [personID], function (error, rows, fields) {
         if (error) {
-
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-            console.log(error);
-            res.sendStatus(400);
+            res.status(400).send(error)
         } else {
             res.sendStatus(204)
         }

@@ -1,5 +1,31 @@
 
+let newURL = window.location.protocol + "//" + window.location.host + '/listeners'
 
+
+if (window.location.href == newURL) {
+    // console.log(window.location.href)
+    window.addEventListener("load", function () {
+        document.getElementById("collection-check").addEventListener("change", function () {
+            var selectobject;
+            // document.getElementById("input-listColName").disabled = this.checked;
+            selectobject = document.getElementById("input-listColName")
+            selectobject.disabled = this.checked;
+            // $("#input-listColName").selectpicker('refresh');
+            // console.log(document.getElementById("input-listColName").disabled)
+            // console.log(document.getElementById("input-listColName").getElementsByTagName("option"))
+
+            if (this.checked) {
+                document.getElementById("input-listColName").style.backgroundColor = "#A0A0A0";
+                document.getElementById("input-listColName").value = ''
+                $("#input-listColName").selectpicker('refresh');
+
+            } else {
+                document.getElementById("input-listColName").style.backgroundColor = "white";
+                $("#input-listColName").selectpicker('refresh');
+            }
+        });
+    });
+}
 // ADD
 // Get the objects we need to modify
 let addListForm = document.getElementById('add-listener');
@@ -16,17 +42,21 @@ if (addListForm) {
         let inputListName = document.getElementById("input-listName");
         let inputListEmail = document.getElementById("input-listEmail");
         let inputListColName = document.getElementById("input-listColName");
+        let checkNewCollection = document.getElementById("collection-check");
 
         // Get the values from the form fields
         let listNameValue = inputListName.value;
         let listEmailalue = inputListEmail.value;
         let listColNameValue = inputListColName.value;
+        let listCheckNewColValue = checkNewCollection.checked;
+        // console.log(listCheckNewColValue)
 
         // Put our data we want to send in a javascript object
         let data = {
             name: listNameValue,
             email: listEmailalue,
-            colName: listColNameValue
+            colName: listColNameValue,
+            colCheck: listCheckNewColValue
         }
 
 
@@ -40,12 +70,15 @@ if (addListForm) {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
 
                 // Add the new data to the table
-                addRowToListTable(xhttp.response);
+                addRowToListTable(xhttp.response, listCheckNewColValue);
 
                 // Clear the input fields for another transaction
                 inputListName.value = '';
                 inputListEmail.value = '';
-                inputListColName.value = '';
+                checkNewCollection.checked = false
+                document.getElementById("input-listColName").disabled = false
+                $("#input-listColName").val('default').selectpicker("refresh");
+
 
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -57,9 +90,13 @@ if (addListForm) {
     })
 };
 
+// disableForm = (data) => {
+//     let collectionForm = document.getElementById("input-listColName");
 
-addRowToListTable = (data) => {
-    // console.log(data)
+// }
+
+addRowToListTable = (data, colCheck) => {
+    console.log(data)
 
     // Get a reference to the current table on the page and clear it out.
     let currentTable = document.getElementById("listener-table");
@@ -102,8 +139,16 @@ addRowToListTable = (data) => {
     editCell.className = "open-editList btn btn-warning btn-small";
     editCell.setAttribute("data-toggle", "modal");
     editCell.setAttribute("href", "#renderEditList");
-    console.log(newRow.listeners_id, newRow.name, newRow.email, newRow.collection_name)
-    editCell.setAttribute("data-id", "{'id':" + newRow.listeners_id + ", 'name':" + '"' + newRow.name + '"' + ",'email':" + '"' + newRow.email + '"' + ",'collection_name':" + '"' + newRow.collection_name + '"' + "}");
+    console.log(newRow.listeners_id, newRow.name, newRow.email, newRow.collections_collection_id)
+    editCell.setAttribute("data-id", "{'id':" + newRow.listeners_id + ", 'name':" + '"' + newRow.name + '"' + ",'email':" + '"' + newRow.email + '"' + ",'collection_id':" + '"' + newRow.collections_collection_id + '"' + "}");
+    // $('select[name=modalSelectCol]').val(newRow.collections_collection_id); $('.selectpicker').selectpicker('refresh');
+    console.log(colCheck)
+    if (colCheck) {
+        $('#modalSelectCol').append('<option value="' + newRow.collections_collection_id + '">' + newRow.collection_name + '</option>');
+        $('select[name=modalSelectCol]').val(newRow.collections_collection_id); $('.selectpicker').selectpicker('refresh');
+        $('#input-listColName').append('<option value="' + newRow.collections_collection_id + '">' + newRow.collection_name + '</option>');
+        $('select[name=input-listColName]').val(newRow.collections_collection_id); $('.selectpicker').selectpicker('refresh');
+    }
     $(editCell).modal('hide');
 
     viewcell = document.createElement("button");
@@ -128,7 +173,6 @@ addRowToListTable = (data) => {
     // Add a custom row attribute so the deleteRow function can find a newly added row
     row.setAttribute('data-value', newRow.listeners_id);
     tableRef.appendChild(row);
-
 }
 
 
@@ -139,19 +183,19 @@ $(document).on("click", ".open-editList", function () {
     if (typeof myList === 'string') {
         var string = myList
         eval('var obj=' + string);
-        console.log(obj.id)
-        console.log(obj.name)
+        console.log(obj)
         $(".modal-body #listeditId").val(obj.id);
         $(".modal-body #listeditName").val(obj.name);
         $(".modal-body #listediEmail").val(obj.email);
         $(".modal-body #listeditColName").val(obj.collection_name);
+        $('select[name=modalSelectCol]').val(obj.collection_id); $('.selectpicker').selectpicker('refresh');
     } else {
-        console.log(myList.id)
-        console.log(myList.name)
+        console.log(myList)
         $(".modal-body #listeditId").val(myList.id);
         $(".modal-body #listeditName").val(myList.name);
         $(".modal-body #listediEmail").val(myList.email);
         $(".modal-body #listeditColName").val(myList.collection_name);
+        $('select[name=modalSelectCol]').val(myList.collection_id); $('.selectpicker').selectpicker('refresh');
     }
 });
 
@@ -165,19 +209,21 @@ if (updateListenerForm) {
 
         // Prevent the form from submitting
         e.preventDefault();
-        $('#renderEditList').modal('hide');
+        $(".modal-header button").click();
 
         // Get form fields we need to get data from
         let inputListId = document.getElementById("listeditId");
         let inputListName = document.getElementById("listeditName");
         let inputListEmail = document.getElementById("listediEmail");
-        let inputListColName = document.getElementById("listeditColName");
+        // let inputListColName = document.getElementById("listeditColName");
+        let inputColSelect = document.getElementById("modalSelectCol");
 
         // Get the values from the form fields
         let listIdValue = inputListId.value;
         let listNameValue = inputListName.value;
         let listEmailValue = inputListEmail.value;
-        let listColNameValue = inputListColName.value;
+        // let listColNameValue = inputListColName.value;
+        let listColIdSelectValue = inputColSelect.value;
 
         // currently the database table for bsg_people does not allow updating values to NULL
         // so we must abort if being bassed NULL for collectionName
@@ -186,12 +232,17 @@ if (updateListenerForm) {
             return;
         }
 
+        if (isNaN(listColIdSelectValue)) {
+            return;
+        }
+
         // Put our data we want to send in a javascript object
         let data = {
             listenerId: listIdValue,
             listenerName: listNameValue,
             listenerEmail: listEmailValue,
-            listenerColName: listColNameValue
+            // listenerColName: listColNameValue,
+            listenerColIdSelect: listColIdSelectValue
         }
 
         // console.log(data)
@@ -207,7 +258,7 @@ if (updateListenerForm) {
 
                 // Add the new data to the table
                 // console.log(colIdValue)
-                updateListenerRow(xhttp.response, listIdValue, listNameValue, listEmailValue, listColNameValue);
+                updateListenerRow(xhttp.response, listIdValue, listNameValue, listEmailValue, listColIdSelectValue);
 
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -222,7 +273,7 @@ if (updateListenerForm) {
 
 
 
-function updateListenerRow(data, listenerId, listName, listEmail, listColName) {
+function updateListenerRow(data, listenerId, listName, listEmail, listColIdSelect) {
     // console.log(listenerId)
     let parsedData = JSON.parse(data);
 
@@ -274,7 +325,7 @@ function updateListenerRow(data, listenerId, listName, listEmail, listColName) {
             // console.log(personID, colName)
 
 
-            editCell.setAttribute("data-id", "{'id':" + listenerId + ", 'name':" + '"' + listName + '"' + ",'email':" + '"' + listEmail + '"' + ",'collection_name':" + '"' + listColName + '"' + "}");
+            editCell.setAttribute("data-id", "{'id':" + listenerId + ", 'name':" + '"' + listName + '"' + ",'email':" + '"' + listEmail + '"' + ",'collection_id':" + '"' + listColIdSelect + '"' + "}");
             $(editCell).modal('hide');
 
 
@@ -317,7 +368,12 @@ function deleteListener(listenerID) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
+            // console.log(result)
             deleteListRow(listenerID);
+        },
+        error: function (errorThrown) {
+            // console.log(errorThrown)
+            Success = false;//doesn't go here
         }
     });
 }

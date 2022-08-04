@@ -3,7 +3,7 @@ const expHandBar = require('express-handlebars');
 const bodyparser = require('body-parser');
 const db = require('./database/db-connector')
 const app = express();            // We need to instantiate an express object to interact with the server in our code
-PORT = 51215;                 // Set a port number at the top so it's easy to change in the future
+PORT = 51219;                 // Set a port number at the top so it's easy to change in the future
 
 // Handlebars init
 // https://stackoverflow.com/questions/69959820/typeerror-exphbs-is-not-a-function

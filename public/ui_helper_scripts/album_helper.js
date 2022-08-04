@@ -1,3 +1,4 @@
+
 // ADD
 // Get the objects we need to modify
 let addAlbForm = document.getElementById('add-album');
@@ -10,21 +11,35 @@ if (addAlbForm) {
         // Prevent the form from submitting
         e.preventDefault();
 
+
+        function selectArr() {
+            var allVal = $("#input-associated").val();
+            console.log(allVal)
+            return allVal;
+        }
+
         // Get form fields we need to get data from
         let inputAlbName = document.getElementById("input-albName");
         let inputAlbRec = document.getElementById("input-albRec");
         let inputAlbRel = document.getElementById("input-albRel");
         let inputAlbGen = document.getElementById("input-albGen");
-        let inputAlbBlFn = document.getElementById("input-albBlFn");
-        let inputAlbBlLn = document.getElementById("input-albBlLn");
+        // let inputAlbBlFn = document.getElementById("input-albBlFn");
+        // let inputAlbBlLn = document.getElementById("input-albBlLn");
+        let inputAlbBl = document.getElementById("input-albumbandleader");
+        let inputAlbPerf = selectArr();
+        // console.log(inputAlbPerf)
 
         // Get the values from the form fields
         let albNameValue = inputAlbName.value;
         let albRecalue = inputAlbRec.value;
         let albRelValue = inputAlbRel.value;
         let albGenValue = inputAlbGen.value;
-        let albBlFnValue = inputAlbBlFn.value;
-        let albBlLnValue = inputAlbBlLn.value;
+        // let albBlFnValue = inputAlbBlFn.value;
+        // let albBlLnValue = inputAlbBlLn.value;
+        let albBlValue = inputAlbBl.value;
+
+
+
 
         // Put our data we want to send in a javascript object
         let data = {
@@ -32,10 +47,14 @@ if (addAlbForm) {
             recYr: albRecalue,
             relYr: albRelValue,
             genre: albGenValue,
-            bandFn: albBlFnValue,
-            bandLn: albBlLnValue
+            // bandFn: albBlFnValue,
+            // bandLn: albBlLnValue
+            bandleader: albBlValue,
+            perfMusicians: inputAlbPerf
+
         }
 
+        console.log(data)
 
         // Setup our AJAX request
         var xhttp = new XMLHttpRequest();
@@ -53,10 +72,12 @@ if (addAlbForm) {
                 inputAlbName.value = '';
                 inputAlbRec.value = '';
                 inputAlbRel.value = '';
-                inputAlbGen.value = '';
-                inputAlbBlFn.value = '';
-                inputAlbBlLn.value = '';
-
+                // inputAlbGen.value = '';
+                // inputAlbBlFn.value = '';
+                // inputAlbBlLn.value = '';
+                $("#input-albGen").val('default').selectpicker("refresh");
+                $("#input-albumbandleader").val('default').selectpicker("refresh");
+                $("#input-associated").val('default').selectpicker("refresh");
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
                 console.log("There was an error with the input.")
@@ -82,7 +103,7 @@ addRowToAlbTable = (data) => {
     let parsedData = JSON.parse(data);
     // console.log(parsedData)
     let newRow = parsedData[parsedData.length - 1]
-    console.log(newRow)
+    // console.log(newRow)
     // console.log(data)
 
     // Create a row and 4 cells
@@ -159,7 +180,6 @@ addRowToAlbTable = (data) => {
 
 
 
-
 $(document).on("click", ".open-editAlb", function () {
     var myAlb = $(this).data('id');
     if (typeof myAlb === 'string') {
@@ -196,7 +216,7 @@ if (updateAlbumForm) {
 
         // Prevent the form from submitting
         e.preventDefault();
-        $('#renderEditAlb').modal('hide');
+        $(".modal-header button").click();
 
         // Get form fields we need to get data from
         let inputAlbId = document.getElementById("albeditId");
@@ -369,7 +389,6 @@ function updateAlbumRow(data, albId, albName, albRec, albRel, albGen, albBlFn, a
             actionCell.appendChild(document.createTextNode('\u00A0'));
             actionCell.appendChild(viewcell)
             row.appendChild(actionCell);
-
         }
     }
 }
