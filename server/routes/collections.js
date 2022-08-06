@@ -4,6 +4,7 @@ const collectionsctrl = require('../controllers/collectionsCtrl')
 // const listenersctrl = require('../controllers/listenersCtrl')
 
 router.get('/', collectionsctrl.view);
+router.post('/view-collection', collectionsctrl.viewCol);
 router.post('/add-collection', collectionsctrl.insert);
 // router.get('/editcol', collectionsctrl.edit);
 router.put('/edit-collection', collectionsctrl.edit)

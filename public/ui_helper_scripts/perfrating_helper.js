@@ -45,12 +45,65 @@ if (addPerfRatingForm) {
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
                 console.log("There was an error with the input.")
+                showPerfRatingInsertError(xhttp.response)
             }
         }
         // Send the request and wait for the response
         xhttp.send(JSON.stringify(data));
     })
 };
+
+function showPerfRatingInsertError(insertPerfRatErr) {
+
+    console.log(insertPerfRatErr)
+
+
+    // let insertBtn = document.getElementById("insert-perfRatingBtn");
+
+
+    const bsPopover = new bootstrap.Popover(document.querySelector('#insert-perfRatingBtn'), {
+        placement: 'right',
+        trigger: 'manual',
+        html: true
+    })
+
+    bsPopover._config.content = insertPerfRatErr
+    bsPopover.show();
+    $(document).click(function (e) {
+        bsPopover.hide();
+    })
+
+
+    // for (let i = 0, row; row = table.rows[i]; i++) {
+    //     //iterate through rows
+    //     //rows would be accessed using the "row" variable assigned in the for loop
+    //     if (table.rows[i].getAttribute("data-value") == personID) {
+
+    //         // Get the location of the row where we found the matching person ID
+    //         let deleteRowIndex = table.getElementsByTagName("tr")[i];
+    //         console.log(deleteRowIndex)
+
+    //         // // Get td of collectionName value
+    //         let td = deleteRowIndex.getElementsByTagName("td")[2];
+    //         // console.log(td.getElementById('deleteColBtn'))
+
+    //         // // Reassign collectionName to our value we updated to
+    //         // td.innerHTML = parsedData[i - 1].name;
+
+    //         const bsPopover = new bootstrap.Popover(deleteRowIndex.querySelector('#deleteColBtn'), {
+    //             placement: 'left',
+    //             trigger: 'manual',
+    //             html: true
+    //         })
+
+    //         bsPopover._config.content = delColErrRes
+    //         bsPopover.show();
+    //         $(document).click(function (e) {
+    //             bsPopover.hide();
+    //         })
+    //     }
+    // }
+}
 
 
 addRowToPerfRatingTable = (data) => {
@@ -99,15 +152,15 @@ addRowToPerfRatingTable = (data) => {
     editCell.setAttribute("data-id", "{'id':" + newRow.performance_rating_id + ", 'collections_collection_id':" + '"' + newRow.collections_collection_id + '"' + ",'ColName':" + '"' + newRow.ColName + '"' + ",'performances_albums_album_id':" + '"' + newRow.performances_albums_album_id + '"' + ",'AlbName':" + '"' + newRow.AlbName + '"' + ",'rating':" + '"' + newRow.rating + '"' + "}");
     $(editCell).modal('hide');
 
-    viewcell = document.createElement("button");
-    viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-    viewcell.className = "btn btn-info btn-small"
+    // viewcell = document.createElement("button");
+    // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
+    // viewcell.className = "btn btn-info btn-small"
 
     actionCell.appendChild(editCell);
     actionCell.appendChild(document.createTextNode('\u00A0'));
     actionCell.appendChild(deleteCell);
-    actionCell.appendChild(document.createTextNode('\u00A0'));
-    actionCell.appendChild(viewcell);
+    // actionCell.appendChild(document.createTextNode('\u00A0'));
+    // actionCell.appendChild(viewcell);
 
     var tableRef = document.getElementById('perfrating-table').getElementsByTagName('tbody')[0];
 
@@ -265,9 +318,9 @@ function updatePerfRatingRow(data, perfRateIdValue) {
 
             let actionCell = document.createElement("TD");
 
-            viewcell = document.createElement("button");
-            viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-            viewcell.className = "btn btn-info btn-small"
+            // viewcell = document.createElement("button");
+            // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
+            // viewcell.className = "btn btn-info btn-small"
 
             editCell = document.createElement("button");
             editCell.innerHTML += `<i class="bi bi-pencil-square"></i> Edit`;
@@ -294,8 +347,8 @@ function updatePerfRatingRow(data, perfRateIdValue) {
             actionCell.appendChild(editCell)
             actionCell.appendChild(document.createTextNode('\u00A0'));
             actionCell.appendChild(deleteCell)
-            actionCell.appendChild(document.createTextNode('\u00A0'));
-            actionCell.appendChild(viewcell)
+            // actionCell.appendChild(document.createTextNode('\u00A0'));
+            // actionCell.appendChild(viewcell)
             row.appendChild(actionCell);
         }
     }

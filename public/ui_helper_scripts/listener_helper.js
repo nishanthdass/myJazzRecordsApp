@@ -3,16 +3,11 @@ let newURL = window.location.protocol + "//" + window.location.host + '/listener
 
 
 if (window.location.href == newURL) {
-    // console.log(window.location.href)
     window.addEventListener("load", function () {
         document.getElementById("collection-check").addEventListener("change", function () {
             var selectobject;
-            // document.getElementById("input-listColName").disabled = this.checked;
             selectobject = document.getElementById("input-listColName")
             selectobject.disabled = this.checked;
-            // $("#input-listColName").selectpicker('refresh');
-            // console.log(document.getElementById("input-listColName").disabled)
-            // console.log(document.getElementById("input-listColName").getElementsByTagName("option"))
 
             if (this.checked) {
                 document.getElementById("input-listColName").style.backgroundColor = "#A0A0A0";
@@ -26,15 +21,6 @@ if (window.location.href == newURL) {
         });
     });
 }
-
-$(document).ready(function () {
-    $("#tableSearch").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#myTable tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-    });
-});
 
 
 // ADD
@@ -94,6 +80,7 @@ if (addListForm) {
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
                 console.log("There was an error with the input.")
+
             }
         }
         // Send the request and wait for the response
@@ -105,6 +92,8 @@ if (addListForm) {
 //     let collectionForm = document.getElementById("input-listColName");
 
 // }
+
+
 
 addRowToListTable = (data, colCheck) => {
     console.log(data)
@@ -162,15 +151,15 @@ addRowToListTable = (data, colCheck) => {
     }
     $(editCell).modal('hide');
 
-    viewcell = document.createElement("button");
-    viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-    viewcell.className = "btn btn-info btn-small"
+    // viewcell = document.createElement("button");
+    // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
+    // viewcell.className = "btn btn-info btn-small"
 
     actionCell.appendChild(editCell);
     actionCell.appendChild(document.createTextNode('\u00A0'));
     actionCell.appendChild(deleteCell);
-    actionCell.appendChild(document.createTextNode('\u00A0'));
-    actionCell.appendChild(viewcell);
+    // actionCell.appendChild(document.createTextNode('\u00A0'));
+    // actionCell.appendChild(viewcell);
 
     var tableRef = document.getElementById('listener-table').getElementsByTagName('tbody')[0];
 
@@ -324,9 +313,9 @@ function updateListenerRow(data, listenerId, listName, listEmail, listColIdSelec
 
             let actionCell = document.createElement("TD");
 
-            viewcell = document.createElement("button");
-            viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-            viewcell.className = "btn btn-info btn-small"
+            // viewcell = document.createElement("button");
+            // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
+            // viewcell.className = "btn btn-info btn-small"
 
             editCell = document.createElement("button");
             editCell.innerHTML += `<i class="bi bi-pencil-square"></i> Edit`;
@@ -350,8 +339,8 @@ function updateListenerRow(data, listenerId, listName, listEmail, listColIdSelec
             actionCell.appendChild(editCell)
             actionCell.appendChild(document.createTextNode('\u00A0'));
             actionCell.appendChild(deleteCell)
-            actionCell.appendChild(document.createTextNode('\u00A0'));
-            actionCell.appendChild(viewcell)
+            // actionCell.appendChild(document.createTextNode('\u00A0'));
+            // actionCell.appendChild(viewcell)
             row.appendChild(actionCell);
 
         }

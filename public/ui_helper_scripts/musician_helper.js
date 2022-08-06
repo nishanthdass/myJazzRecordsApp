@@ -102,15 +102,15 @@ addRowToMuscTable = (data) => {
     editCell.setAttribute("data-id", "{'id':" + newRow.musician_id + ", 'first_name':" + '"' + newRow.first_name + '"' + ", 'last_name':" + '"' + newRow.last_name + '"' + ", 'instrument':" + '"' + newRow.instrument + '"' + "}");
     $(editCell).modal('hide');
 
-    viewcell = document.createElement("button");
-    viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-    viewcell.className = "btn btn-info btn-small"
+    // viewcell = document.createElement("button");
+    // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
+    // viewcell.className = "btn btn-info btn-small"
 
     actionCell.appendChild(editCell);
     actionCell.appendChild(document.createTextNode('\u00A0'));
     actionCell.appendChild(deleteCell);
-    actionCell.appendChild(document.createTextNode('\u00A0'));
-    actionCell.appendChild(viewcell);
+    // actionCell.appendChild(document.createTextNode('\u00A0'));
+    // actionCell.appendChild(viewcell);
 
     var tableRef = document.getElementById('musician-table').getElementsByTagName('tbody')[0];
 
@@ -260,9 +260,9 @@ function updateMuscRow(data, muscId, muscFn, muscLn, muscInstr) {
 
             let actionCell = document.createElement("TD");
 
-            viewcell = document.createElement("button");
-            viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-            viewcell.className = "btn btn-info btn-small"
+            // viewcell = document.createElement("button");
+            // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
+            // viewcell.className = "btn btn-info btn-small"
 
             editCell = document.createElement("button");
             editCell.innerHTML += `<i class="bi bi-pencil-square"></i> Edit`;
@@ -283,8 +283,8 @@ function updateMuscRow(data, muscId, muscFn, muscLn, muscInstr) {
             actionCell.appendChild(editCell)
             actionCell.appendChild(document.createTextNode('\u00A0'));
             actionCell.appendChild(deleteCell)
-            actionCell.appendChild(document.createTextNode('\u00A0'));
-            actionCell.appendChild(viewcell)
+            // actionCell.appendChild(document.createTextNode('\u00A0'));
+            // actionCell.appendChild(viewcell)
             row.appendChild(actionCell);
 
         }

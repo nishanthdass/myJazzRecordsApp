@@ -52,49 +52,6 @@
 </div>
 
 
-Issue with editing the release year
-{{!--
-<div class="btn-group sticky-top py-3">
-    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuClickable"
-        data-bs-toggle="dropdown" aria-expanded="false">
-        Insert Album
-    </button>
-    <div class="dropdown-menu">
-        <form id="add-album" class="px-4 py-3">
-            <div class="mb-3">
-                <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
-                    name="input-albName" id="input-albName">
-            </div>
-            <div class="mb-3">
-                <input type="text" class="form-control form-control-lg form-control-block" placeholder="recording year"
-                    name="input-albRec" id="input-albRec">
-            </div>
-            <div class="mb-3">
-                <input type="text" class="form-control form-control-lg form-control-block" placeholder="release year"
-                    name="input-albRel" id="input-albRel">
-            </div>
-            <div class="mb-3">
-                <input type="text" class="form-control form-control-lg form-control-block" placeholder="genre name"
-                    name="input-albGen" id="input-albGen">
-            </div>
-            <div class="mb-3">
-                <select class="selectpicker" data-live-search="true" name="input-bandleader" id="input-albumbandleader">
-                    <option value="">Select a bandleader</option>
-                    {{#each musicians}}
-                    <option value="{{this.musician_id}}">{{this.first_name}} {{this.last_name}}</option>
-                    {{/each}}
-                </select>
-            </div>
-
-
-            <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
-                Album</button>
-        </form>
-        <div class="dropdown-divider"></div>
-    </div>
-</div>
---}}
-
 
 <table class="table table-dark table-striped table-bordered" id="albums-table">
     <thead>
@@ -125,7 +82,7 @@ Issue with editing the release year
                     title="Edit this item" href="#renderEditAlb"><i class="bi bi-pencil-square"></i> Edit</button>
                 <button onclick="deleteAlbum({{this.album_id}})" class="btn btn-danger btn-small"><i
                         class="bi bi-trash3-fill"></i>Delete</button>
-                <button class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</button>
+                <!-- <button class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</button> -->
             </td>
         </tr>
         {{/each}}

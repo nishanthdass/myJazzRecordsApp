@@ -73,19 +73,13 @@ exports.insert = (req, res) => {
                 }
                 else {
                     console.log('database error: \n', console.log(error));
-                    res.status(400).send({
-                        status: 400,
-                        error: 'Not found'
-                    })
+                    res.status(400).send(error)
                 }
             })
         }
         else {
             console.log('database error: \n', console.log(error));
-            res.status(400).send({
-                status: 400,
-                error: 'Not found'
-            })
+            res.status(400).send(error)
         }
     })
 };

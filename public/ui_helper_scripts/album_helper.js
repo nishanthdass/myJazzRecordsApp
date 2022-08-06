@@ -147,15 +147,15 @@ addRowToAlbTable = (data) => {
     editCell.setAttribute("data-id", "{'id':" + newRow.album_id + ", 'name':" + '"' + newRow.name + '"' + ",'recording_year':" + '"' + newRow.recording_year + '"' + ",'release_year':" + '"' + newRow.release_year + '"' + ",'genre_id':" + '"' + newRow.genres_genre_id + '"' + ",'genre_name':" + '"' + newRow.genname + '"' + ",'bandleader_id':" + '"' + newRow.bandleader_id + '"' + ",'first_name':" + '"' + newRow.first_name + '"' + ",'last_name':" + '"' + newRow.last_name + '"' + "}");
     $(editCell).modal('hide');
 
-    viewcell = document.createElement("button");
-    viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-    viewcell.className = "btn btn-info btn-small"
+    // viewcell = document.createElement("button");
+    // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
+    // viewcell.className = "btn btn-info btn-small"
 
     actionCell.appendChild(editCell);
     actionCell.appendChild(document.createTextNode('\u00A0'));
     actionCell.appendChild(deleteCell);
-    actionCell.appendChild(document.createTextNode('\u00A0'));
-    actionCell.appendChild(viewcell);
+    // actionCell.appendChild(document.createTextNode('\u00A0'));
+    // actionCell.appendChild(viewcell);
 
     var tableRef = document.getElementById('albums-table').getElementsByTagName('tbody')[0];
 
@@ -357,9 +357,9 @@ function updateAlbumRow(data, albId, albName, albRec, albRel, albGen, albBlFn, a
 
             let actionCell = document.createElement("TD");
 
-            viewcell = document.createElement("button");
-            viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-            viewcell.className = "btn btn-info btn-small"
+            // viewcell = document.createElement("button");
+            // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
+            // viewcell.className = "btn btn-info btn-small"
 
             editCell = document.createElement("button");
             editCell.innerHTML += `<i class="bi bi-pencil-square"></i> Edit`;
@@ -386,8 +386,8 @@ function updateAlbumRow(data, albId, albName, albRec, albRel, albGen, albBlFn, a
             actionCell.appendChild(editCell)
             actionCell.appendChild(document.createTextNode('\u00A0'));
             actionCell.appendChild(deleteCell)
-            actionCell.appendChild(document.createTextNode('\u00A0'));
-            actionCell.appendChild(viewcell)
+            // actionCell.appendChild(document.createTextNode('\u00A0'));
+            // actionCell.appendChild(viewcell)
             row.appendChild(actionCell);
         }
     }

@@ -24,7 +24,8 @@
                     placeholder="rating(1-5)" name="input-perfrateRating" id="input-perfrateRating">
             </div>
             <div class="col-sm">
-                <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
+                <button id="insert-perfRatingBtn" type="submit" class="btn btn-primary btn-lg btn-block"
+                    data-bs-toggle="popover" data-bs-trigger="focus"><i class="bi bi-plus-lg"></i> Insert
                     Performance Rating</button>
             </div>
         </div>
@@ -61,7 +62,7 @@ Need to prevent duplicates of same album in one collection
                     Edit</button>
                 <button onclick="deletePerfRating({{this.performance_rating_id}})" class="btn btn-danger btn-small"><i
                         class="bi bi-trash3-fill"></i>Delete</button>
-                <button class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</button>
+                <!-- <button class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</button> -->
             </td>
         </tr>
         {{/each}}

@@ -112,7 +112,7 @@ exports.edit = function (req, res, next) {
     let albumRec = parseInt(data.albumRec);
     let albumRel = parseInt(data.albumRel);
 
-    let query1 = `UPDATE Albums SET name = "${data.albumName}", recording_year = "${albumRec}", release_year = "${albumRec}", genres_genre_id = (SELECT genre_id from Genres WHERE name = "${data.albumGen}"), bandleader_id = (SELECT musician_id From Musicians WHERE first_name = "${data.albumBlFn}" AND last_name = "${data.albumBlLn}" )  WHERE album_id = "${albumId}"`;
+    let query1 = `UPDATE Albums SET name = "${data.albumName}", recording_year = "${albumRec}", release_year = "${albumRel}", genres_genre_id = (SELECT genre_id from Genres WHERE name = "${data.albumGen}"), bandleader_id = (SELECT musician_id From Musicians WHERE first_name = "${data.albumBlFn}" AND last_name = "${data.albumBlLn}" )  WHERE album_id = "${albumId}"`;
 
     let query2 = 'SELECT Albums.album_id, Albums.name, Albums.recording_year, Albums.release_year, Albums.genres_genre_id, Genres.name AS genname, Albums.bandleader_id, Musicians.first_name, Musicians.last_name FROM Albums LEFT JOIN Genres ON Albums.genres_genre_id = Genres.genre_id LEFT JOIN Musicians ON Albums.bandleader_id = Musicians.musician_id ORDER BY Albums.album_id;';
     db.pool.query(query1, function (error, rows, fields) {
@@ -155,3 +155,4 @@ exports.delete = function (req, res, next) {
         }
     })
 };
+

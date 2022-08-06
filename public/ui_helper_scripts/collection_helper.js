@@ -1,4 +1,145 @@
+$('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('New message to ' + recipient)
+    modal.find('.modal-body input').val(recipient)
+})
 
+
+$('#myModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var viewCol = button.data('id') // Extract info from data-* attributes
+    // console.log(viewCol.name)
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/view-collection", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    // Tell our AJAX request how to resolve
+    xhttp.onreadystatechange = () => {
+
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+            // Add the new data to the table
+            sendViewColtoModal(xhttp.response, viewCol);
+
+            // Clear the input fields for another transaction
+        }
+        else if (xhttp.readyState == 4 && xhttp.status != 200) {
+            console.log("There was an error with the input.")
+        }
+    }
+    // Send the request and wait for the response
+    xhttp.send(JSON.stringify(viewCol));
+
+    // var modal = $(this)
+    // console.log(modal)
+
+    // modal.find('.modal-title').text('Description of ' + viewCol.name)
+    // modal.find('.modal-body').text(viewCol);
+    sendViewColtoModal = (data, viewCol) => {
+        console.log(viewCol)
+        var modal = $(this)
+        console.log(modal)
+        let jsonData = JSON.parse(data)
+        console.log(jsonData)
+        let musicianOne = jsonData[0]
+        let musicianOneFirstName = musicianOne.first_name
+        let musicianOneLastName = musicianOne.last_name
+        let musicianOneRating = musicianOne.rating
+        let collectionListener = musicianOne.ListName
+
+        let musicianTwo = jsonData[1]
+        let musicianTwoFirstName = musicianTwo.first_name
+        let musicianTwoLastName = musicianTwo.last_name
+        let musicianTwoRating = musicianTwo.rating
+
+        let musicianThree = jsonData[2]
+        let musicianThreeFirstName = musicianThree.first_name
+        let musicianThreeLastName = musicianThree.last_name
+        let musicianThreeRating = musicianThree.rating
+
+        modal.find('.modal-title').text('Description of ' + viewCol.name)
+        modal.find('.modal-body').text("This Collection belongs to " + collectionListener + ". Their top 3 Musicians are " + musicianOneFirstName + " " + musicianOneLastName + ", who has a rating of " + musicianOneRating + ", " + musicianTwoFirstName + " " + musicianTwoLastName + ", who has a rating of " + musicianTwoRating + ", and " + musicianThreeFirstName + " " + musicianThreeLastName + ", who has a rating of " + musicianThreeRating + ".");
+    }
+
+})
+
+
+
+// // VIEW Collection
+// // let viewCol = document.getElementById('view-collection')
+// $(document).on("click", ".open-viewCol", function () {
+//     let someText = "someText text text"
+//     sendViewColtoModal(someText)
+//     var myCol = $(this).data('id');
+//     console.log(typeof myCol)
+//     // let viewColId = document.getElementById("viewele")
+//     // console.log(viewColId)
+//     // console.log(viewColId.value)
+//     let data = { id: myCol.id }
+//     // console.log(data)
+//     var xhttp = new XMLHttpRequest();
+//     xhttp.open("POST", "/view-collection", true);
+//     xhttp.setRequestHeader("Content-type", "application/json");
+//     // Tell our AJAX request how to resolve
+//     xhttp.onreadystatechange = () => {
+
+//         if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+//             // Add the new data to the table
+//             // addRowToColTable(xhttp.response);
+
+//             // Clear the input fields for another transaction
+//         }
+//         else if (xhttp.readyState == 4 && xhttp.status != 200) {
+//             console.log("There was an error with the input.")
+//         }
+//     }
+//     // Send the request and wait for the response
+//     xhttp.send(JSON.stringify(data));
+// });
+
+// sendViewColtoModal = (data) => {
+//     console.log(data)
+
+//     // Get a reference to the current table on the page and clear it out.
+//     // let viewModal = document.getElementById("renderViewCol");
+//     // $('#myModal').modal({
+//     //     keyboard: false
+//     // })
+//     // $('#myModal').modal('show')
+//     // myModal.show()
+
+
+
+//     // console.log(viewModal)
+//     // Get the location where we should insert the new row (end of table)
+//     // let newRowIndex = currentTable.rows.length;
+//     // // console.log(newRowIndex)
+
+//     // // Get a reference to the new row from the database query (last object)
+//     // let parsedData = JSON.parse(data);
+//     // // console.log(parsedData)
+//     // let newRow = parsedData[parsedData.length - 1]
+
+//     // // Create a row and 4 cells
+//     // let row = document.createElement("TR");
+//     // let idCell = document.createElement("TD");
+//     // let collectionNameCell = document.createElement("TD");
+//     // let actionCell = document.createElement("TD");
+
+//     // // Fill the cells with correct data
+//     // idCell.innerText = newRow.collection_id;
+//     // collectionNameCell.innerText = newRow.name;
+
+// }
+// // if (viewCol) {
+// //     viewCol.addEventListener("click", myFunction);
+// // }
 
 // ADD
 // Get the objects we need to modify
@@ -22,7 +163,6 @@ if (addColForm) {
         let data = {
             name: colNameValue
         }
-
 
         // Setup our AJAX request
         var xhttp = new XMLHttpRequest();
@@ -54,7 +194,6 @@ addRowToColTable = (data) => {
 
     // Get a reference to the current table on the page and clear it out.
     let currentTable = document.getElementById("collection-table");
-    console.log(currentTable.className)
     // Get the location where we should insert the new row (end of table)
     let newRowIndex = currentTable.rows.length;
     // console.log(newRowIndex)
@@ -148,6 +287,7 @@ $(document).on("click", ".open-editCol", function () {
         $(".modal-body #coleditName").val(myCol.name);
     }
 });
+
 
 
 
@@ -336,11 +476,8 @@ function showCollectionDelError(delColErrRes, personID) {
             $(document).click(function (e) {
                 bsPopover.hide();
             })
-
         }
     }
-
-
 }
 
 
