@@ -1,55 +1,38 @@
-const mysql = require('mysql');
-// const { query } = require('express');
-const db = require('../../database/db-connector')
+// Citation for the following function: view, insert, edit, delete
+// Date: 8/08/2022
+// Adapted from: Developing in Node.JS Module OSU CS340
+// Source URL: https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
 
+const mysql = require('mysql');     // require mysql
+const db = require('../../database/db-connector')   // require database connection information to make queries to db
 
-// exports.view = (req, res) => {
-//     let query1 = `Select * from Collections;`;
-//     db.pool.query(query1, function (error, rows, fields) {
-//         if (!error) {
-//             res.render('home', { data: rows });
-//         }
-//         else {
-//             console.log('database error: \n', console.log(error))
-//         }
-//     })
-// };
-
-
+//  view request and response from db
 exports.view = (req, res) => {
-    console.log(req)
-    // Declare Query 1
     let query1;
-
-    // If there is no query string, we just perform a basic SELECT
+    // if search field in Collections is empty, then send all rows
     if (req.query.searchName === undefined) {
         query1 = `Select * from Collections;`;
     }
-
-
-    // // If there is a query string, we assume this is a search, and return desired results
     else {
+        // if search field in Collections has a string, then use below query
         query1 = `SELECT * FROM Collections WHERE name LIKE "%${req.query.searchName}%"`
     }
     db.pool.query(query1, function (error, rows, fields) {
         if (!error) {
+            // if no errors export a render of home page along with object containing row data
             res.render('home', { data: rows });
         }
         else {
-            console.log('database error: \n', console.log(err))
+            console.log('database error: \n', console.log(error))
         }
     })
 };
 
 
-
+//  view a particular rows information by making request and response from db for a joined table which will allow our app to sum ratings or musicians associated with a particular collection
 exports.viewCol = (req, res) => {
-    console.log(req.body)
-    // console.log(req)
+    // request contatins the row id associated with the data of a particular row
     let data = req.body
-
-    console.log(data.id)
-
     let collectionId = parseInt(data.id);
 
     let query1 = `SELECT Listeners.name AS ListName, Albums.name, Albums.album_id , Performance_Ratings.performances_albums_album_id, SUM(Performance_Ratings.rating) AS rating, Performances.musicians_musician_id, Musicians.first_name, Musicians.last_name
@@ -65,9 +48,10 @@ exports.viewCol = (req, res) => {
     WHERE Listeners.name = (SELECT name FROM Listeners WHERE collections_collection_id = ${collectionId})
     GROUP BY Musicians.musician_id
     ORDER BY rating DESC;`;
+
     db.pool.query(query1, function (error, rows, fields) {
         if (!error) {
-            console.log(rows)
+            // if no error export rows
             res.send(rows)
         }
         else {
@@ -76,39 +60,27 @@ exports.viewCol = (req, res) => {
     })
 };
 
+// insert data into database
 exports.insert = function (req, res) {
-    console.log(req.body)
-    // Capture the incoming data and parse it back to a JS object
+    // request contains data input into the forms field
     let data = req.body;
-    // console.log(data)
-
 
     query1 = `INSERT INTO Collections (name) VALUES ("${data.name}")`;
 
     db.pool.query(query1, function (error, rows, fields) {
-        // console.log(rows)
-        // Check to see if there was an error
         if (error) {
-
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error)
             res.sendStatus(400);
         }
         else {
-            // If there was no error, perform a SELECT * on bsg_people
+            // if insertion is successful send the all rows back so that we can render new row in table
             query2 = `SELECT * FROM Collections;`;
             db.pool.query(query2, function (error, rows, fields) {
-
-                // If there was an error on the second query, send a 400
                 if (error) {
-
-                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
                     console.log(error);
                     res.sendStatus(400);
                 }
-                // If all went well, send the results of the query back.
                 else {
-                    // console.log(rows)
                     res.send(rows);
                 }
             })
@@ -117,40 +89,27 @@ exports.insert = function (req, res) {
 };
 
 
-
+// Update a row in database
 exports.edit = function (req, res, next) {
+    // request includes row id for the row that is being updated
     let data = req.body;
-
-    // console.log(data)
-
-    // let collectionName = parseInt(data.collectionName);
     let collectionId = parseInt(data.collectionId);
-
-    console.log(collectionId, data.collectionName)
 
     query1 = `UPDATE Collections SET name = ? WHERE collection_id = ?`;
     query2 = `SELECT * FROM Collections;`
 
-    // Run the 1st query
     db.pool.query(query1, [data.collectionName, collectionId], function (error, rows, fields) {
         if (error) {
-
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error);
             res.sendStatus(400);
         }
-
-        // If there was no error, we run our second query and return that data so we can use it to update the people's
-        // table on the front-end
         else {
-            // Run the second query
+            // if update to db is successful send back all rows so that the appropriate row can be indexed and rendered with updated information
             db.pool.query(query2, function (error, rows, fields) {
-
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
-                    // console.log(rows)
                     res.send(rows);
                 }
             })
@@ -159,17 +118,15 @@ exports.edit = function (req, res, next) {
 };
 
 
-
+// Delete a row in the db
 exports.delete = function (req, res, next) {
-    console.log("works!!!")
+    // request will include the row id for row to be deleted
     let data = req.body;
-    let personID = parseInt(data.id);
-    console.log(personID)
-
+    let collectionID = parseInt(data.id);
 
     let query1 = `DELETE FROM Collections WHERE collection_id = ?`;
 
-    db.pool.query(query1, [personID], function (error, rows, fields) {
+    db.pool.query(query1, [collectionID], function (error, rows, fields) {
         if (error) {
             res.status(400).send(error)
         } else {

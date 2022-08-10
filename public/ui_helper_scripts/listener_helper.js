@@ -1,26 +1,29 @@
+// Citation for the following function: addListForm, addRowToListTable, updateListenerForm, updateListenerRow, deleteListener, deleteListRow
+// Date: 8/08/2022
+// Adapted from: Developing in Node.JS Module OSU CS340
+// Source URL: https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
 
+// URL is refrences so that we can trigger a the below event listener when we are on the listeners page only
 let newURL = window.location.protocol + "//" + window.location.host + '/listeners'
 
-
+// event listener is used to indicate if the check box to create a new collection for the listener is checked
 if (window.location.href == newURL) {
     window.addEventListener("load", function () {
         document.getElementById("collection-check").addEventListener("change", function () {
             var selectobject;
             selectobject = document.getElementById("input-listColName")
             selectobject.disabled = this.checked;
-
             if (this.checked) {
                 document.getElementById("input-listColName").style.backgroundColor = "#A0A0A0";
                 document.getElementById("input-listColName").value = ''
                 $("#input-listColName").selectpicker('refresh');
-
             } else {
                 document.getElementById("input-listColName").style.backgroundColor = "white";
                 $("#input-listColName").selectpicker('refresh');
             }
         });
     });
-}
+};
 
 
 // ADD
@@ -30,7 +33,6 @@ let addListForm = document.getElementById('add-listener');
 // Modify the objects we need
 if (addListForm) {
     addListForm.addEventListener("submit", function (e) {
-        // console.log(e)
 
         // Prevent the form from submitting
         e.preventDefault();
@@ -46,7 +48,6 @@ if (addListForm) {
         let listEmailalue = inputListEmail.value;
         let listColNameValue = inputListColName.value;
         let listCheckNewColValue = checkNewCollection.checked;
-        // console.log(listCheckNewColValue)
 
         // Put our data we want to send in a javascript object
         let data = {
@@ -56,14 +57,12 @@ if (addListForm) {
             colCheck: listCheckNewColValue
         }
 
-
         // Setup our AJAX request
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", "/listeners/add-listener", true);
         xhttp.setRequestHeader("Content-type", "application/json");
         // Tell our AJAX request how to resolve
         xhttp.onreadystatechange = () => {
-
             if (xhttp.readyState == 4 && xhttp.status == 200) {
 
                 // Add the new data to the table
@@ -75,12 +74,9 @@ if (addListForm) {
                 checkNewCollection.checked = false
                 document.getElementById("input-listColName").disabled = false
                 $("#input-listColName").val('default').selectpicker("refresh");
-
-
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
                 console.log("There was an error with the input.")
-
             }
         }
         // Send the request and wait for the response
@@ -88,29 +84,19 @@ if (addListForm) {
     })
 };
 
-// disableForm = (data) => {
-//     let collectionForm = document.getElementById("input-listColName");
-
-// }
-
-
-
+// render newly added rows
 addRowToListTable = (data, colCheck) => {
-    console.log(data)
-
     // Get a reference to the current table on the page and clear it out.
     let currentTable = document.getElementById("listener-table");
-    // console.log(currentTable.className)
+
     // Get the location where we should insert the new row (end of table)
     let newRowIndex = currentTable.rows.length;
-    // console.log(newRowIndex)
 
     // Get a reference to the new row from the database query (last object)
     let parsedData = JSON.parse(data);
-    // console.log(parsedData)
     let newRow = parsedData[parsedData.length - 1]
 
-    // Create a row and 4 cells
+    // Create a row and 6 cells
     let row = document.createElement("TR");
     let idCell = document.createElement("TD");
     let listenerNameCell = document.createElement("TD");
@@ -126,6 +112,7 @@ addRowToListTable = (data, colCheck) => {
     listenerColIdCell.innerText = newRow.collections_collection_id;
     listenerColNameCell.innerText = newRow.collection_name;
 
+    // render new buttons in new action cell
     deleteCell = document.createElement("button");
     deleteCell.innerHTML += `<i class="bi bi-trash3-fill"></i>Delete`;
     deleteCell.onclick = function () {
@@ -139,27 +126,20 @@ addRowToListTable = (data, colCheck) => {
     editCell.className = "open-editList btn btn-warning btn-small";
     editCell.setAttribute("data-toggle", "modal");
     editCell.setAttribute("href", "#renderEditList");
-    console.log(newRow.listeners_id, newRow.name, newRow.email, newRow.collections_collection_id)
     editCell.setAttribute("data-id", "{'id':" + newRow.listeners_id + ", 'name':" + '"' + newRow.name + '"' + ",'email':" + '"' + newRow.email + '"' + ",'collection_id':" + '"' + newRow.collections_collection_id + '"' + "}");
-    // $('select[name=modalSelectCol]').val(newRow.collections_collection_id); $('.selectpicker').selectpicker('refresh');
-    console.log(colCheck)
+    $(editCell).modal('hide');
+
+    // clear check mark and insert new collection name to approprate edit modal
     if (colCheck) {
         $('#modalSelectCol').append('<option value="' + newRow.collections_collection_id + '">' + newRow.collection_name + '</option>');
         $('select[name=modalSelectCol]').val(newRow.collections_collection_id); $('.selectpicker').selectpicker('refresh');
         $('#input-listColName').append('<option value="' + newRow.collections_collection_id + '">' + newRow.collection_name + '</option>');
         $('select[name=input-listColName]').val(newRow.collections_collection_id); $('.selectpicker').selectpicker('refresh');
     }
-    $(editCell).modal('hide');
-
-    // viewcell = document.createElement("button");
-    // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-    // viewcell.className = "btn btn-info btn-small"
 
     actionCell.appendChild(editCell);
     actionCell.appendChild(document.createTextNode('\u00A0'));
     actionCell.appendChild(deleteCell);
-    // actionCell.appendChild(document.createTextNode('\u00A0'));
-    // actionCell.appendChild(viewcell);
 
     var tableRef = document.getElementById('listener-table').getElementsByTagName('tbody')[0];
 
@@ -176,21 +156,23 @@ addRowToListTable = (data, colCheck) => {
 }
 
 
-
+// EDIT
+// Bellow helper function to move data from front end tables to bootstrap modal for Update/Edit
+// Citation for the below function:
+// Date: 8/08/2022
+// Adapted from: Stackoverflow answer by mg1075
+// Source URL:  https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
 $(document).on("click", ".open-editList", function () {
     var myList = $(this).data('id');
-
     if (typeof myList === 'string') {
         var string = myList
         eval('var obj=' + string);
-        console.log(obj)
         $(".modal-body #listeditId").val(obj.id);
         $(".modal-body #listeditName").val(obj.name);
         $(".modal-body #listediEmail").val(obj.email);
         $(".modal-body #listeditColName").val(obj.collection_name);
         $('select[name=modalSelectCol]').val(obj.collection_id); $('.selectpicker').selectpicker('refresh');
     } else {
-        console.log(myList)
         $(".modal-body #listeditId").val(myList.id);
         $(".modal-body #listeditName").val(myList.name);
         $(".modal-body #listediEmail").val(myList.email);
@@ -199,9 +181,8 @@ $(document).on("click", ".open-editList", function () {
     }
 });
 
-
+// Update
 let updateListenerForm = document.getElementById('update-listener');
-
 
 if (updateListenerForm) {
     // Modify the objects we need
@@ -215,18 +196,13 @@ if (updateListenerForm) {
         let inputListId = document.getElementById("listeditId");
         let inputListName = document.getElementById("listeditName");
         let inputListEmail = document.getElementById("listediEmail");
-        // let inputListColName = document.getElementById("listeditColName");
         let inputColSelect = document.getElementById("modalSelectCol");
 
         // Get the values from the form fields
         let listIdValue = inputListId.value;
         let listNameValue = inputListName.value;
         let listEmailValue = inputListEmail.value;
-        // let listColNameValue = inputListColName.value;
         let listColIdSelectValue = inputColSelect.value;
-
-        // currently the database table for bsg_people does not allow updating values to NULL
-        // so we must abort if being bassed NULL for collectionName
 
         if (isNaN(listIdValue)) {
             return;
@@ -245,8 +221,6 @@ if (updateListenerForm) {
             listenerColIdSelect: listColIdSelectValue
         }
 
-        // console.log(data)
-
         // Setup our AJAX request
         var xhttp = new XMLHttpRequest();
         xhttp.open("PUT", "/listeners/edit-listeners", true);
@@ -255,26 +229,21 @@ if (updateListenerForm) {
         // Tell our AJAX request how to resolve
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-
                 // Add the new data to the table
-                // console.log(colIdValue)
                 updateListenerRow(xhttp.response, listIdValue, listNameValue, listEmailValue, listColIdSelectValue);
-
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
                 console.log("There was an error with the input.")
             }
         }
-
         // Send the request and wait for the response
         xhttp.send(JSON.stringify(data));
     })
 }
 
 
-
+// Update render rows
 function updateListenerRow(data, listenerId, listName, listEmail, listColIdSelect) {
-    // console.log(listenerId)
     let parsedData = JSON.parse(data);
 
     let table = document.getElementById("listener-table");
@@ -289,45 +258,29 @@ function updateListenerRow(data, listenerId, listName, listEmail, listColIdSelec
 
             // Get td of collectionName value
             let td1 = updateRowIndex.getElementsByTagName("td")[1];
-
-
             let td2 = updateRowIndex.getElementsByTagName("td")[2];
-
-
             let td3 = updateRowIndex.getElementsByTagName("td")[3];
-
-
             let td4 = updateRowIndex.getElementsByTagName("td")[4];
 
             // Reassign collectionName to our value we updated to
             td1.innerHTML = parsedData[i - 1].name;
-
             td2.innerHTML = parsedData[i - 1].email;
-
             td3.innerHTML = parsedData[i - 1].collections_collection_id;
-
             td4.innerHTML = parsedData[i - 1].collection_name;
-
-
+            
+            // Delete existing Action cell
             row.deleteCell(5)
 
             let actionCell = document.createElement("TD");
 
-            // viewcell = document.createElement("button");
-            // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-            // viewcell.className = "btn btn-info btn-small"
-
+            // render new buttons in new action cell
             editCell = document.createElement("button");
             editCell.innerHTML += `<i class="bi bi-pencil-square"></i> Edit`;
             editCell.className = "open-editList btn btn-warning btn-small";
             editCell.setAttribute("data-toggle", "modal");
             editCell.setAttribute("href", "#renderEditList");
-            // console.log(personID, colName)
-
-
             editCell.setAttribute("data-id", "{'id':" + listenerId + ", 'name':" + '"' + listName + '"' + ",'email':" + '"' + listEmail + '"' + ",'collection_id':" + '"' + listColIdSelect + '"' + "}");
             $(editCell).modal('hide');
-
 
             deleteCell = document.createElement("button");
             deleteCell.innerHTML += `<i class="bi bi-trash3-fill"></i>Delete`;
@@ -347,43 +300,30 @@ function updateListenerRow(data, listenerId, listName, listEmail, listColIdSelec
     }
 }
 
-
-
 //DELETE
-
 // code for deletePerson function using jQuery
 function deleteListener(listenerID) {
-    // console.log("personID ", personID)
-
     let link = '/listeners/delete-listeners';
     let data = {
         id: listenerID
     };
-
-    // console.log(data)
-
     $.ajax({
         url: link,
         type: 'DELETE',
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            // console.log(result)
             deleteListRow(listenerID);
         },
         error: function (errorThrown) {
-            // console.log(errorThrown)
-            Success = false;//doesn't go here
+            Success = false;
         }
     });
 }
 
-
 function deleteListRow(listenerID) {
-
     let table = document.getElementById("listener-table");
     for (let i = 0, row; row = table.rows[i]; i++) {
-        // console.log(row)
         //iterate through rows
         //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == listenerID) {

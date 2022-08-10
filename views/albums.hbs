@@ -1,3 +1,7 @@
+{{! Below form event allows for users to input an insert into database. Form id is used to refer to event handler in
+relvant helper file.}}
+{{! Bootstraps Selectpicker is using the the initial view query in the controller file to attain data for the dropdown
+list}}
 <div class="container-fluid bg-dark text-white sticky-top" id="insert-bar">
     <form id="add-album" class="px-4 py-3">
         <div class="row">
@@ -14,8 +18,6 @@
                     name="input-albRel" id="input-albRel">
             </div>
             <div class="col-sm">
-                {{!-- <input type="text" class="form-control form-control-lg form-control-block"
-                    placeholder="genre name" name="input-albGen" id="input-albGen"> --}}
                 <select class="selectpicker" data-live-search="true" data-size="8" name="input-albGen"
                     id="input-albGen">
                     <option value="">Select a Genre</option>
@@ -52,7 +54,8 @@
 </div>
 
 
-
+{{! Table is receving data from the database to populate the rows. Table id is refered to in relevent helper file
+to build new rows for inserts and to find the relevant row for update and delete }}
 <table class="table table-dark table-striped table-bordered" id="albums-table">
     <thead>
         <tr>
@@ -64,6 +67,8 @@
             <th>Action</th>
         </tr>
     </thead>
+    {{! tbody id is referenced in main helper. It is used to implement the search present in the navbar}}
+    {{! tr data-value is essential for indexing rows in helper functions}}
     <tbody id="myTable">
         {{#each data}}
         <tr data-value={{this.album_id}}>
@@ -77,12 +82,14 @@
             <td>{{this.first_name}}</td>
             <td>{{this.last_name}}</td>
             <td>
+                {{! class name for Edit and/or View is used to refer to the modal in helper function event listener.
+                Passing data using data-id is essential for modal to prepopulate}}
+                {{! delete uses a onclick function present in helper file}}
                 <button class="open-editAlb btn btn-warning btn-small" data-toggle="modal"
                     data-id='{"id":{{this.album_id}},"name":"{{this.name}}", "recording_year":"{{this.recording_year}}","release_year":"{{this.release_year}}", "genre_id":"{{this.genres_genre_id}}", "genre_name":"{{this.genname}}","bandleader_id":"{{this.bandleader_id}}","first_name":"{{this.first_name}}","last_name":"{{this.last_name}}"}'
                     title="Edit this item" href="#renderEditAlb"><i class="bi bi-pencil-square"></i> Edit</button>
                 <button onclick="deleteAlbum({{this.album_id}})" class="btn btn-danger btn-small"><i
                         class="bi bi-trash3-fill"></i>Delete</button>
-                <!-- <button class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</button> -->
             </td>
         </tr>
         {{/each}}
@@ -91,7 +98,7 @@
 
 
 
-<!-- Edit Modal -->
+{{! Edit Modal }}
 <div class="modal fade" id="renderEditAlb" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -129,7 +136,7 @@
                         value="" />
                 </div>
                 <div class="modal-body">
-                    Musician name
+                    bandleader name
                     <input type="text" class="form-control form-control-lg" name="albeditfn" id="albeditfn" value="" />
                     <input type="text" class="form-control form-control-lg" name="albeditln" id="albeditln" value="" />
                 </div>

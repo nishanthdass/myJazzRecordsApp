@@ -1,9 +1,5 @@
-// Citation for the following function: view, insert, edit, delete
-// Date: 8/08/2022
-// Adapted from: Developing in Node.JS Module OSU CS340
-// Source URL: https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
-
 const mysql = require('mysql');
+// const { query } = require('express');
 const db = require('../../database/db-connector')
 
 
@@ -64,8 +60,12 @@ exports.insert = function (req, res) {
 exports.edit = function (req, res, next) {
     let data = req.body;
 
+    // console.log(data)
+
     // let genreName = parseInt(data.genreName);
     let genreId = parseInt(data.genreId);
+
+    console.log(genreId, data.genreName)
 
     queryUpdateWorld = `UPDATE Genres SET name = ? WHERE genre_id = ?`;
     selectWorld = `SELECT * FROM Genres;`
@@ -89,6 +89,7 @@ exports.edit = function (req, res, next) {
                     console.log(error);
                     res.sendStatus(400);
                 } else {
+                    // console.log(rows)
                     res.send(rows);
                 }
             })
@@ -97,14 +98,19 @@ exports.edit = function (req, res, next) {
 };
 
 exports.delete = function (req, res, next) {
+    console.log("works!!!")
     let data = req.body;
     let personID = parseInt(data.id);
+    console.log(personID)
+
 
     let query1 = `DELETE FROM Genres WHERE genre_id = ?`;
+
 
     // Run the 1st query
     db.pool.query(query1, [personID], function (error, rows, fields) {
         if (error) {
+
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error);
             res.sendStatus(400);
@@ -114,86 +120,3 @@ exports.delete = function (req, res, next) {
     })
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const mysql = require('mysql');
-// // const { query } = require('express');
-// const db = require('../../database/db-connector')
-
-
-// exports.view = (req, res) => {
-//     let query1 = 'Select * from Genres;';
-//     db.pool.query(query1, function (error, rows, fields) {
-//         if (!error) {
-//             res.render('genres', { data: rows });
-//         }
-//         else {
-//             console.log('database error: \n', console.log(error))
-//         }
-//     })
-// };
-
-// exports.insert = (req, res) => {
-//     //https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
-
-//     let data = req.body;
-//     let query1 = `INSERT INTO Genres (name) VALUES ('${data['input-genName']}');`
-
-//     db.pool.query(query1, function (error, rows, fields) {
-//         if (!error) {
-//             res.redirect('/genres');
-//         }
-//         else {
-//             console.log('database error: \n', console.log(error));
-
-//             res.status(400).send({
-//                 status: 400,
-//                 error: 'Not found'
-//             })
-
-//         }
-//     })
-// };
-
-
-// exports.edit = (req, res) => {
-
-//     let dataId = req.query.geneditId;
-//     let dataName = req.query.geneditName;
-
-//     console.log(dataId, dataName)
-//     let genId = parseInt(dataId)
-
-//     if (isNaN(genId)) {
-//         genId = 'NULL'
-//     }
-
-//     let query1 = `UPDATE Genres SET name = "${dataName}" WHERE genre_id = ${genId}`;
-//     db.pool.query(query1, function (error, rows, fields) {
-//         if (!error) {
-//             res.redirect('/genres');
-//         }
-//         else {
-//             console.log('database error: \n', console.log(error))
-//         }
-//     })
-// };

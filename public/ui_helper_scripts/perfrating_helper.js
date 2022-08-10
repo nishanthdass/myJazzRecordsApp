@@ -1,3 +1,8 @@
+// Citation for the following function: addPerfRatingForm, addRowToPerfRatingTable, updatePerfRatingForm, updatePerfRatingRow, deletePerfRating, deletePerfRatingRow
+// Date: 8/08/2022
+// Adapted from: Developing in Node.JS Module OSU CS340
+// Source URL: https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
+
 // ADD
 // Get the objects we need to modify
 let addPerfRatingForm = document.getElementById('add-perfrating');
@@ -5,7 +10,6 @@ let addPerfRatingForm = document.getElementById('add-perfrating');
 // Modify the objects we need
 if (addPerfRatingForm) {
     addPerfRatingForm.addEventListener("submit", function (e) {
-
         // Prevent the form from submitting
         e.preventDefault();
 
@@ -32,12 +36,9 @@ if (addPerfRatingForm) {
         xhttp.setRequestHeader("Content-type", "application/json");
         // Tell our AJAX request how to resolve
         xhttp.onreadystatechange = () => {
-
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-
                 // Add the new data to the table
                 addRowToPerfRatingTable(xhttp.response);
-
                 // Clear the input fields for another transaction
                 inputPerfrateRating.value = '';
                 $("#input-perfrateColName").val('default').selectpicker("refresh");
@@ -54,13 +55,11 @@ if (addPerfRatingForm) {
 };
 
 function showPerfRatingInsertError(insertPerfRatErr) {
-
-    console.log(insertPerfRatErr)
-
-
-    // let insertBtn = document.getElementById("insert-perfRatingBtn");
-
-
+    // popover configuration and content rendering
+    // Citation for the below function:
+    // Date: 8/08/2022
+    // Adapted from: Stackoverflow answer by zim
+    // Source URL:  https://stackoverflow.com/questions/68194421/how-do-you-create-and-modify-popover-in-bootstrap-5-using-jquery
     const bsPopover = new bootstrap.Popover(document.querySelector('#insert-perfRatingBtn'), {
         placement: 'right',
         trigger: 'manual',
@@ -72,40 +71,9 @@ function showPerfRatingInsertError(insertPerfRatErr) {
     $(document).click(function (e) {
         bsPopover.hide();
     })
-
-
-    // for (let i = 0, row; row = table.rows[i]; i++) {
-    //     //iterate through rows
-    //     //rows would be accessed using the "row" variable assigned in the for loop
-    //     if (table.rows[i].getAttribute("data-value") == personID) {
-
-    //         // Get the location of the row where we found the matching person ID
-    //         let deleteRowIndex = table.getElementsByTagName("tr")[i];
-    //         console.log(deleteRowIndex)
-
-    //         // // Get td of collectionName value
-    //         let td = deleteRowIndex.getElementsByTagName("td")[2];
-    //         // console.log(td.getElementById('deleteColBtn'))
-
-    //         // // Reassign collectionName to our value we updated to
-    //         // td.innerHTML = parsedData[i - 1].name;
-
-    //         const bsPopover = new bootstrap.Popover(deleteRowIndex.querySelector('#deleteColBtn'), {
-    //             placement: 'left',
-    //             trigger: 'manual',
-    //             html: true
-    //         })
-
-    //         bsPopover._config.content = delColErrRes
-    //         bsPopover.show();
-    //         $(document).click(function (e) {
-    //             bsPopover.hide();
-    //         })
-    //     }
-    // }
 }
 
-
+// render newly added row
 addRowToPerfRatingTable = (data) => {
     // Get a reference to the current table on the page and clear it out.
     let currentTable = document.getElementById("perfrating-table");
@@ -116,7 +84,7 @@ addRowToPerfRatingTable = (data) => {
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
 
-    // Create a row and 4 cells
+    // Create a row and 7 cells
     let row = document.createElement("TR");
     let idCell = document.createElement("TD");
     let colIdCell = document.createElement("TD");
@@ -126,7 +94,7 @@ addRowToPerfRatingTable = (data) => {
     let ratingCell = document.createElement("TD");
     let actionCell = document.createElement("TD");
 
-    // // Fill the cells with correct data
+    // Fill the cells with correct data
     idCell.innerText = newRow.performance_rating_id;
     colIdCell.innerText = newRow.collections_collection_id;
     colNameCell.innerText = newRow.ColName;
@@ -134,7 +102,7 @@ addRowToPerfRatingTable = (data) => {
     albumNameCell.innerText = newRow.AlbName;
     ratingCell.innerHTML = newRow.rating;
 
-
+    // render new buttons
     deleteCell = document.createElement("button");
     deleteCell.innerHTML += `<i class="bi bi-trash3-fill"></i>Delete`;
     deleteCell.onclick = function () {
@@ -142,13 +110,11 @@ addRowToPerfRatingTable = (data) => {
     };
     deleteCell.className = "btn btn-danger btn-small";
 
-
     editCell = document.createElement("button");
     editCell.innerHTML += `<i class="bi bi-pencil-square"></i> Edit`;
     editCell.className = "open-editPerfRating btn btn-warning btn-small";
     editCell.setAttribute("data-toggle", "modal");
     editCell.setAttribute("href", "#renderEditPerfRating");
-    // console.log(newRow.listeners_id, newRow.name, newRow.email, newRow.collection_name)
     editCell.setAttribute("data-id", "{'id':" + newRow.performance_rating_id + ", 'collections_collection_id':" + '"' + newRow.collections_collection_id + '"' + ",'ColName':" + '"' + newRow.ColName + '"' + ",'performances_albums_album_id':" + '"' + newRow.performances_albums_album_id + '"' + ",'AlbName':" + '"' + newRow.AlbName + '"' + ",'rating':" + '"' + newRow.rating + '"' + "}");
     $(editCell).modal('hide');
 
@@ -172,18 +138,22 @@ addRowToPerfRatingTable = (data) => {
     row.appendChild(ratingCell);
     row.appendChild(actionCell);
 
-
     // // Add a custom row attribute so the deleteRow function can find a newly added row
     row.setAttribute('data-value', newRow.performance_rating_id);
     tableRef.appendChild(row);
 }
 
+// EDIT
+// Bellow helper function to move data from front end tables to bootstrap modal for Update/Edit
+// Citation for the below function:
+// Date: 8/08/2022
+// Adapted from: Stackoverflow answer by mg1075
+// Source URL:  https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
 $(document).on("click", ".open-editPerfRating", function () {
     var myPerfRat = $(this).data('id');
     if (typeof myPerfRat === 'string') {
         var string = myPerfRat
         eval('var obj=' + string);
-        console.log(obj)
         $(".modal-body #perfrateditId").val(obj.id);
         $(".modal-body #perfrateditColId").val(obj.collections_collection_id);
         $(".modal-body #perfrateditColName").val(obj.ColName);
@@ -203,9 +173,7 @@ $(document).on("click", ".open-editPerfRating", function () {
 
 
 // UPDATE
-
 let updatePerfRatingForm = document.getElementById('update-perfrating');
-
 
 if (updatePerfRatingForm) {
     // Modify the objects we need
@@ -266,7 +234,6 @@ if (updatePerfRatingForm) {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
 
                 updatePerfRatingRow(xhttp.response, perfRateIdValue);
-
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
                 console.log("There was an error with the input.")
@@ -290,16 +257,13 @@ function updatePerfRatingRow(data, perfRateIdValue) {
         //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == perfRateIdValue) {
 
-
             // Get the location of the row where we found the matching person ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
             // Get td of collectionName value
             let td = updateRowIndex.getElementsByTagName("td")[1];
-            console.log(td)
 
             let td1 = updateRowIndex.getElementsByTagName("td")[2];
-            console.log(td1)
 
             let td2 = updateRowIndex.getElementsByTagName("td")[3];
 
@@ -313,9 +277,10 @@ function updatePerfRatingRow(data, perfRateIdValue) {
             td3.innerHTML = parsedData[i - 1].AlbName;
             td4.innerHTML = parsedData[i - 1].rating;
 
-
+            // delete current action cell
             row.deleteCell(6)
 
+            // render new action cell and butons
             let actionCell = document.createElement("TD");
 
             // viewcell = document.createElement("button");
@@ -327,13 +292,11 @@ function updatePerfRatingRow(data, perfRateIdValue) {
             editCell.className = "open-editPerfRating btn btn-warning btn-small";
             editCell.setAttribute("data-toggle", "modal");
             editCell.setAttribute("href", "#renderEditPerfRating");
-            // // console.log(parsedData[i - 1])
             collectionId = parsedData[i - 1].collections_collection_id
             colName = parsedData[i - 1].ColName
             albumId = parsedData[i - 1].performances_albums_album_id
             albumName = parsedData[i - 1].AlbName;
             rating = parsedData[i - 1].rating
-            // console.log(albId, albName, albRec, albRel, genId, albGen, blId, albBlFn, albBlLn)
             editCell.setAttribute("data-id", "{'id':" + perfRateIdValue + ", 'collections_collection_id':" + '"' + collectionId + '"' + ",'ColName':" + '"' + colName + '"' + ",'performances_albums_album_id':" + '"' + albumId + '"' + ",'AlbName':" + '"' + albumName + '"' + ",'rating':" + '"' + rating + '"' + "}");
             $(editCell).modal('hide');
 
@@ -355,9 +318,7 @@ function updatePerfRatingRow(data, perfRateIdValue) {
 }
 
 //DELETE
-
 function deletePerfRating(perfRating_id) {
-
     let link = '/perfratings/delete-perfrating';
     let data = {
         id: perfRating_id
@@ -382,7 +343,6 @@ function deletePerfRatingRow(perfRating_id) {
         if (table.rows[i].getAttribute("data-value") == perfRating_id) {
             table.deleteRow(i);
             break;
-
         }
     }
 }

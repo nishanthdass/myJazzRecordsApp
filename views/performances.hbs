@@ -1,109 +1,58 @@
-<table class="table table-dark table-striped table-bordered">
+{{! Below form event allows for users to input an insert into database. Form id is used to refer to event handler in
+relvant helper file.}}
+<div class="container-fluid bg-dark text-white sticky-top" id="insert-bar">
+    <form id="add-performance" class="px-4 py-3">
+        <div class="row">
+            <div class="col-sm">
+                <input type="text" class="form-control form-control-lg form-control-block" placeholder="first name"
+                    name="input-perfFn" id="input-perfFn">
+            </div>
+            <div class="col-sm">
+                <input type="text" class="form-control form-control-lg form-control-block" placeholder="last name"
+                    name="input-perfLn" id="input-perfLn">
+            </div>
+            <div class="col-sm">
+                <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
+                    name="input-albName" id="input-albName">
+            </div>
+            <div class="col-sm">
+                <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg">
+                    </i>Insert Performance</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{{! Table is receving data from the database to populate the rows. Table id is refered to in relevent helper file
+to build new rows for inserts and to find the relevant row for update and delete }}
+<table class="table table-dark table-striped table-bordered" id="performance-table">
     <thead>
         <tr>
-            <th scope="col" class="text-center">performance_id</th>
-            <th scope="col" class="text-center">musician_id</th>
-            <th scope="col" class="text-center">Musicians('name')</th>
-            <th scope="col" class="text-center">album_id</th>
-            <th scope="col" class="text-center">Albums('name')</th>
-            <th scope="col" class="text-center">Action</th>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Action</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <th scope="row" class="text-center"></th>
-
-            <form class="px-4 py-3" action="/performances" method="POST">
-                <td class="text-center">
-                    <input type="text" class="form-control form-control-sm form-control-block" placeholder="first name"
-                        name="input-perfMusFn">
-                    <input type="text" class="form-control form-control-sm form-control-block" placeholder="last name"
-                        name="input-perfMusLn">
-                    -- To do - use jQuery bootstrap multiselect dropdown
-                </td>
-                <td></td>
-                <td class="text-center">
-                    <input type="text" class="form-control form-control-lg form-control-block" placeholder="album name"
-                        name="input-perfAlbName">
-                </td>
-                <td></td>
-                <td class="text-center">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
-                        Performance</button>
-                </td>
-            </form>
-        </tr>
+    {{! tbody id is referenced in main helper. It is used to implement the search present in the navbar}}
+    {{! tr data-value is essential for indexing rows in helper functions}}
+    <tbody id="myTable">
         {{#each data}}
-        <tr>
-            <th scope="row" class="text-center">{{this.performance_id}}</th>
-            <td class="text-center">{{this.musicians_musician_id}}</td>
-            <td class="text-center">{{this.first_name}} {{this.last_name}}</td>
-            <td class="text-center">{{this.albums_album_id}}</td>
-            <td class="text-center">{{this.name}}</td>
-            <td class="text-center">
-                <a type="button" class="open-editPerf btn btn-warning btn-small" data-toggle="modal"
-                    data-id='{"id":{{this.performance_id}}, "musicians_musician_id":{{this.musicians_musician_id}}, "first_name":"{{this.first_name}}", "last_name":"{{this.last_name}}","albums_album_id":"{{this.albums_album_id}}", "name":"{{this.name}}"}'
-                    title="Edit this item" href="#renderEdit"><i class="bi bi-pencil-square"></i> Edit</a>
-                <a href="#" type="button" class="btn btn-danger btn-small"> <i class="bi bi-trash3-fill"></i> Delete</a>
-                <a href="#" type="button" class="btn btn-info btn-small"> <i class="bi bi-eyeglasses"></i> View</a>
+        <tr data-value={{this.performance_id}}>
+            <td>{{this.performance_id}}</td>
+            <td>{{this.musicians_musician_id}}</td>
+            <td>{{this.first_name}}</td>
+            <td>{{this.last_name}}</td>
+            <td>{{this.albums_album_id}}</td>
+            <td>{{this.name}}</td>
+            <td>
+                {{! delete uses a onclick function present in helper file}}
+                <button onclick="deletePerformance({{this.performance_id}})" class="btn btn-danger btn-small"><i
+                        class="bi bi-trash3-fill"></i>Delete</button>
             </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-
-
-
-
-<!-- Edit Modal -->
-<div class="modal fade" id="renderEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Performance</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form class="px-4 py-3" action="/performances/editperf" method="GET">
-                <div class="modal-body">
-                    id
-                    <input type="text" class="form-control form-control-lg" name="perfeditId" id="perfeditId" value=""
-                        style="background: #D3D3D3;" readonly />
-                </div>
-                <div class="modal-body">
-                    musicians id
-                    <input type="text" class="form-control form-control-lg" name="perfmusceditId" id="perfmusceditId"
-                        value="" style="background: #D3D3D3;" readonly />
-                </div>
-                <div class="modal-body">
-                    first name
-                    <input type="text" class="form-control form-control-lg" name="perfmusceditFn" id="perfmusceditFn"
-                        value="" />
-                </div>
-                <div class="modal-body">
-                    last name
-                    <input type="text" class="form-control form-control-lg" name="perfmusceditLn" id="perfmusceditLn"
-                        value="" />
-                </div>
-                <div class="modal-body">
-                    album id
-                    <input type="text" class="form-control form-control-lg" name="perfalbid" id="perfalbid" value=""
-                        style="background: #D3D3D3;" readonly />
-                </div>
-                <div class="modal-body">
-                    album name
-                    <input type="text" class="form-control form-control-lg" name="perfalbname" id="perfalbname"
-                        value="" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-            <div>
-            </div>
-        </div>
-    </div>
-</div>

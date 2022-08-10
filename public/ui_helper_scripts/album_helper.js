@@ -1,3 +1,7 @@
+// Citation for the following function: addAlbForm, addRowToAlbTable, updateAlbForm, updateAlbRow, deleteAlbum, deleteAlbRow
+// Date: 8/08/2022
+// Adapted from: Developing in Node.JS Module OSU CS340
+// Source URL: https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
 
 // ADD
 // Get the objects we need to modify
@@ -6,15 +10,11 @@ let addAlbForm = document.getElementById('add-album');
 // Modify the objects we need
 if (addAlbForm) {
     addAlbForm.addEventListener("submit", function (e) {
-        // console.log(e)
-
         // Prevent the form from submitting
         e.preventDefault();
 
-
         function selectArr() {
             var allVal = $("#input-associated").val();
-            console.log(allVal)
             return allVal;
         }
 
@@ -23,23 +23,16 @@ if (addAlbForm) {
         let inputAlbRec = document.getElementById("input-albRec");
         let inputAlbRel = document.getElementById("input-albRel");
         let inputAlbGen = document.getElementById("input-albGen");
-        // let inputAlbBlFn = document.getElementById("input-albBlFn");
-        // let inputAlbBlLn = document.getElementById("input-albBlLn");
         let inputAlbBl = document.getElementById("input-albumbandleader");
+        // below form field expects array from select picker
         let inputAlbPerf = selectArr();
-        // console.log(inputAlbPerf)
 
         // Get the values from the form fields
         let albNameValue = inputAlbName.value;
         let albRecalue = inputAlbRec.value;
         let albRelValue = inputAlbRel.value;
         let albGenValue = inputAlbGen.value;
-        // let albBlFnValue = inputAlbBlFn.value;
-        // let albBlLnValue = inputAlbBlLn.value;
         let albBlValue = inputAlbBl.value;
-
-
-
 
         // Put our data we want to send in a javascript object
         let data = {
@@ -47,14 +40,9 @@ if (addAlbForm) {
             recYr: albRecalue,
             relYr: albRelValue,
             genre: albGenValue,
-            // bandFn: albBlFnValue,
-            // bandLn: albBlLnValue
             bandleader: albBlValue,
             perfMusicians: inputAlbPerf
-
         }
-
-        console.log(data)
 
         // Setup our AJAX request
         var xhttp = new XMLHttpRequest();
@@ -64,7 +52,6 @@ if (addAlbForm) {
         xhttp.onreadystatechange = () => {
 
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-
                 // Add the new data to the table
                 addRowToAlbTable(xhttp.response);
 
@@ -72,9 +59,7 @@ if (addAlbForm) {
                 inputAlbName.value = '';
                 inputAlbRec.value = '';
                 inputAlbRel.value = '';
-                // inputAlbGen.value = '';
-                // inputAlbBlFn.value = '';
-                // inputAlbBlLn.value = '';
+                // Refresh selectpicker dropdown options upon submit
                 $("#input-albGen").val('default').selectpicker("refresh");
                 $("#input-albumbandleader").val('default').selectpicker("refresh");
                 $("#input-associated").val('default').selectpicker("refresh");
@@ -88,23 +73,16 @@ if (addAlbForm) {
     })
 };
 
-
+// Render newly added row
 addRowToAlbTable = (data) => {
-
-
     // Get a reference to the current table on the page and clear it out.
     let currentTable = document.getElementById("albums-table");
-    // console.log(currentTable.className)
     // Get the location where we should insert the new row (end of table)
     let newRowIndex = currentTable.rows.length;
-    // console.log(newRowIndex)
 
     // Get a reference to the new row from the database query (last object)
     let parsedData = JSON.parse(data);
-    // console.log(parsedData)
     let newRow = parsedData[parsedData.length - 1]
-    // console.log(newRow)
-    // console.log(data)
 
     // Create a row and 4 cells
     let row = document.createElement("TR");
@@ -130,6 +108,7 @@ addRowToAlbTable = (data) => {
     firstNameCell.innerText = newRow.first_name;
     LastNameCell.innerText = newRow.last_name;
 
+    // render new buttons in new action cell
     deleteCell = document.createElement("button");
     deleteCell.innerHTML += `<i class="bi bi-trash3-fill"></i>Delete`;
     deleteCell.onclick = function () {
@@ -143,13 +122,8 @@ addRowToAlbTable = (data) => {
     editCell.className = "open-editAlb btn btn-warning btn-small";
     editCell.setAttribute("data-toggle", "modal");
     editCell.setAttribute("href", "#renderEditAlb");
-    // console.log(newRow.listeners_id, newRow.name, newRow.email, newRow.collection_name)
     editCell.setAttribute("data-id", "{'id':" + newRow.album_id + ", 'name':" + '"' + newRow.name + '"' + ",'recording_year':" + '"' + newRow.recording_year + '"' + ",'release_year':" + '"' + newRow.release_year + '"' + ",'genre_id':" + '"' + newRow.genres_genre_id + '"' + ",'genre_name':" + '"' + newRow.genname + '"' + ",'bandleader_id':" + '"' + newRow.bandleader_id + '"' + ",'first_name':" + '"' + newRow.first_name + '"' + ",'last_name':" + '"' + newRow.last_name + '"' + "}");
     $(editCell).modal('hide');
-
-    // viewcell = document.createElement("button");
-    // viewcell.innerHTML += `<i class="bi bi-eyeglasses"></i> View`;
-    // viewcell.className = "btn btn-info btn-small"
 
     actionCell.appendChild(editCell);
     actionCell.appendChild(document.createTextNode('\u00A0'));
@@ -177,9 +151,12 @@ addRowToAlbTable = (data) => {
 
 }
 
-
-
-
+// EDIT
+// Bellow helper function to move data from front end tables to bootstrap modal for Update/Edit
+// Citation for the below function:
+// Date: 8/08/2022
+// Adapted from: Stackoverflow answer by mg1075
+// Source URL:  https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
 $(document).on("click", ".open-editAlb", function () {
     var myAlb = $(this).data('id');
     if (typeof myAlb === 'string') {
@@ -206,9 +183,7 @@ $(document).on("click", ".open-editAlb", function () {
 
 
 // UPDATE
-
 let updateAlbumForm = document.getElementById('update-album');
-
 
 if (updateAlbumForm) {
     // Modify the objects we need
@@ -236,8 +211,6 @@ if (updateAlbumForm) {
         let albBlFnValue = inputAlbBlFn.value;
         let albBlLnValue = inputAlbBlLn.value;
 
-        // console.log(albIdValue, albNameValue, albRecValue, albRelValue, albGenValue, albBlFnValue, albBlLnValue)
-
         if (isNaN(albIdValue)) {
             return;
         }
@@ -261,10 +234,6 @@ if (updateAlbumForm) {
             albumBlLn: albBlLnValue
         }
 
-        console.log(data)
-
-        // console.log(data)
-
         // Setup our AJAX request
         var xhttp = new XMLHttpRequest();
         xhttp.open("PUT", "/albums/edit-album", true);
@@ -273,9 +242,7 @@ if (updateAlbumForm) {
         // Tell our AJAX request how to resolve
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-
                 // Add the new data to the table
-                // console.log(colIdValue)
                 updateAlbumRow(xhttp.response, albIdValue, albNameValue, albRecValue, albRelValue, albGenValue, albBlFnValue, albBlLnValue);
 
             }
@@ -283,7 +250,6 @@ if (updateAlbumForm) {
                 console.log("There was an error with the input.")
             }
         }
-
         // Send the request and wait for the response
         xhttp.send(JSON.stringify(data));
     })
@@ -291,7 +257,6 @@ if (updateAlbumForm) {
 
 
 function updateAlbumRow(data, albId, albName, albRec, albRel, albGen, albBlFn, albBlLn) {
-    // console.log(listenerId)
     let parsedData = JSON.parse(data);
 
     let table = document.getElementById("albums-table");
@@ -306,36 +271,15 @@ function updateAlbumRow(data, albId, albName, albRec, albRel, albGen, albBlFn, a
 
             // Get td of collectionName value
             let td1 = updateRowIndex.getElementsByTagName("td")[1];
-            console.log(td1)
-
-
             let td2 = updateRowIndex.getElementsByTagName("td")[2];
-            console.log(td2)
-
-
             let td3 = updateRowIndex.getElementsByTagName("td")[3];
-            console.log(td3)
-
-
             let td4 = updateRowIndex.getElementsByTagName("td")[4];
-            console.log(td4)
-
             let td5 = updateRowIndex.getElementsByTagName("td")[5];
-            console.log(td5)
-
-
             let td6 = updateRowIndex.getElementsByTagName("td")[6];
-            console.log(td6)
-
-
             let td7 = updateRowIndex.getElementsByTagName("td")[7];
-            console.log(td7)
-
             let td8 = updateRowIndex.getElementsByTagName("td")[8];
-            console.log(td8)
 
             // Reassign collectionName to our value we updated to
-            console.log(parsedData[i - 1])
             td1.innerHTML = parsedData[i - 1].name;
 
             td2.innerHTML = parsedData[i - 1].recording_year;
@@ -352,9 +296,10 @@ function updateAlbumRow(data, albId, albName, albRec, albRel, albGen, albBlFn, a
 
             td8.innerHTML = parsedData[i - 1].last_name;
 
-
+            // Delete current Action cell
             row.deleteCell(9)
 
+            // render new buttons in new action cell
             let actionCell = document.createElement("TD");
 
             // viewcell = document.createElement("button");
@@ -366,10 +311,8 @@ function updateAlbumRow(data, albId, albName, albRec, albRel, albGen, albBlFn, a
             editCell.className = "open-editAlb btn btn-warning btn-small";
             editCell.setAttribute("data-toggle", "modal");
             editCell.setAttribute("href", "#renderEditAlb");
-            // console.log(parsedData[i - 1])
             genId = parsedData[i - 1].genres_genre_id
             blId = parsedData[i - 1].bandleader_id
-            console.log(albId, albName, albRec, albRel, genId, albGen, blId, albBlFn, albBlLn)
 
 
             editCell.setAttribute("data-id", "{'id':" + albId + ", 'name':" + '"' + albName + '"' + ",'recording_year':" + '"' + albRec + '"' + ",'release_year':" + '"' + albRel + '"' + ",'genre_id':" + '"' + genId + '"' + ",'genre_name':" + '"' + albGen + '"' + ",'bandleader_id':" + '"' + blId + '"' + ",'first_name':" + '"' + albBlFn + '"' + ",'last_name':" + '"' + albBlLn + '"' + "}");
@@ -394,18 +337,12 @@ function updateAlbumRow(data, albId, albName, albRec, albRel, albGen, albBlFn, a
 }
 
 
-
 //DELETE
-
 function deleteAlbum(album_id) {
-
     let link = '/albums/delete-album';
     let data = {
         id: album_id
     };
-
-    // console.log(data)
-
     $.ajax({
         url: link,
         type: 'DELETE',
@@ -420,7 +357,6 @@ function deleteAlbum(album_id) {
 function deleteAlbRow(album_id) {
     let table = document.getElementById("albums-table");
     for (let i = 0, row; row = table.rows[i]; i++) {
-        // console.log(row)
         //iterate through rows
         //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == album_id) {

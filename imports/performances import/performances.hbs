@@ -1,0 +1,98 @@
+<div class="container-fluid bg-dark text-white sticky-top" id="insert-bar">
+    <form id="add-performance" class = "px-4 py-3">
+        <div class="row">
+            <div class="col-sm">
+                <input type="text" class="form-control form-control-lg form-control-block" 
+                    placeholder="first name" name="input-perfFn" id="input-perfFn">
+            </div>
+            <div class="col-sm">
+                <input type="text" class="form-control form-control-lg form-control-block" 
+                    placeholder="last name" name="input-perfLn" id="input-perfLn">
+            </div>
+            <div class="col-sm">
+                <input type="text" class="form-control form-control-lg form-control-block" 
+                    placeholder="album name" name="input-albName" id="input-albName">
+            </div>
+            <div class="col-sm">
+                <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg">
+                </i>Insert Performance</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table class="table table-dark table-striped table-bordered" id="performance-table">
+    <thead>
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="myTable">
+        {{#each data}}
+        <tr data-value={{this.performance_id}}>
+            <td>{{this.performance_id}}</td>
+            <td>{{this.musicians_musician_id}}</td>
+            <td>{{this.first_name}}</td>
+            <td>{{this.last_name}}</td>
+            <td>{{this.albums_album_id}}</td>
+            <td>{{this.name}}</td>
+            
+            <td>
+                <!-- <button class="open-editPerf btn btn-warning btn-small" data-toggle="modal"
+                    data-id='{"id":{{this.performance_id}},"musician id":"{{this.musicians_musician_id}}", "album id":"{{this.albums_album_id}}"}'
+                    title="Edit this item" href="#renderEditPerf"><i class="bi bi-pencil-square"></i> Edit</button> -->
+                <button onclick="deletePerformance({{this.performance_id}})" class="btn btn-danger btn-small"><i
+                        class="bi bi-trash3-fill"></i>Delete</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="renderEditPerf" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Performances</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="update-performance" class="px-4 py-3">
+                <div class="modal-body">
+                    id
+                    <input type="text" class="form-control form-control-lg" name="perfeditId" id="perfeditId" value=""
+                        style="background: #D3D3D3;" readonly />
+                </div>
+                <div class="modal-body">
+                    first name
+                    <input type="text" class="form-control form-control-lg" name="perfeditFn" id="perfeditFn"
+                        value="" />
+                </div>
+                <div class="modal-body">
+                    last name
+                    <input type="text" class="form-control form-control-lg" name="perfeditLn" id="pereditLn"
+                        value="" />
+                </div>
+                <div class="modal-body">
+                    album
+                    <input type="text" class="form-control form-control-lg" name="perfeditAl" id="perfeditAl"
+                        value="" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>

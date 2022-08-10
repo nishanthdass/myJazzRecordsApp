@@ -1,22 +1,26 @@
-{{! Below form event allows for users to input an insert into database. Form id is used to refer to event handler in
-relvant helper file.}}
-<div class="container-fluid bg-dark text-white sticky-top" id="insert-bar">
-    <form id="add-genre" class="px-4 py-3">
-        <div class="row">
-            <div class="col-sm">
+{{!--
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
+
+<!-- Large button groups (default and split) -->
+
+<div class="btn-group sticky-top py-3">
+    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        Insert Genre
+    </button>
+    <div class="dropdown-menu">
+        <form id="add-genre" class="px-4 py-3">
+            <div class="mb-3">
                 <input type="text" class="form-control form-control-lg form-control-block" placeholder="genre name"
                     name="input-genName" id="input-genName">
             </div>
-            <div class="col-sm">
-                <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
-                    Genre</button>
-            </div>
-        </div>
-    </form>
+            <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="bi bi-plus-lg"></i> Insert
+                Genre</button>
+        </form>
+        <div class="dropdown-divider"></div>
+    </div>
 </div>
 
-{{! Table is receving data from the database to populate the rows. Table id is refered to in relevent helper file
-to build new rows for inserts and to find the relevant row for update and delete }}
 <table class="table table-dark table-striped table-bordered" id="genre-table">
     <thead>
         <tr>
@@ -28,22 +32,18 @@ to build new rows for inserts and to find the relevant row for update and delete
             <th>Action</th>
         </tr>
     </thead>
-    {{! tbody id is referenced in main helper. It is used to implement the search present in the navbar}}
-    {{! tr data-value is essential for indexing rows in helper functions}}
-    <tbody id="myTable">
+
+    <tbody>
         {{#each data}}
         <tr data-value={{this.genre_id}}>
             <td>{{this.genre_id}}</td>
             <td>{{this.name}}</td>
             <td>
-                {{! class name for Edit and/or View is used to refer to the modal in helper function event listener.
-                Passing data using data-id is essential for modal to prepopulate}}
-                {{! delete uses a onclick function present in helper file}}
                 <button class="open-editGen btn btn-warning btn-small" data-toggle="modal"
                     data-id='{"id":{{this.genre_id}},"name":"{{this.name}}"}' title="Edit this item"
                     href="#renderEditGen" id="editele"><i class="bi bi-pencil-square"></i>
                     Edit</button>
-                <button onclick="deleteGenre({{this.genre_id}})" class="btn btn-danger btn-small"><i
+                <button onclick="deletePerson({{this.genre_id}})" class="btn btn-danger btn-small"><i
                         class="bi bi-trash3-fill"></i>Delete</button>
 
             </td>
@@ -52,7 +52,7 @@ to build new rows for inserts and to find the relevant row for update and delete
     </tbody>
 </table>
 
-{{! Edit Modal }}
+<!-- Edit Modal -->
 <div class="modal fade" id="renderEditGen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">

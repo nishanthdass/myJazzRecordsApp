@@ -1,3 +1,5 @@
+// Below function uses a on change function to index any table with a tbody id of myTable.
+// Citation below
 // https://mdbootstrap.com/docs/b4/jquery/forms/search/#:~:text=Bootstrap%20search%20is%20a%20component,an%20even%20better%20user%20experience.
 
 $(document).ready(function () {

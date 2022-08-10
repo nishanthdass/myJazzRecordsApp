@@ -1,4 +1,7 @@
-
+// Citation for the following function: addMuscForm, addRowToMuscTable, updateMuscForm, updateMuscRow, deleteMusician, deleteMuscRow
+// Date: 8/08/2022
+// Adapted from: Developing in Node.JS Module OSU CS340
+// Source URL: https://canvas.oregonstate.edu/courses/1879182/pages/exploration-developing-in-node-dot-js?module_item_id=22241461
 
 // ADD
 // Get the objects we need to modify
@@ -7,8 +10,6 @@ let addMuscForm = document.getElementById('add-musician');
 // Modify the objects we need
 if (addMuscForm) {
     addMuscForm.addEventListener("submit", function (e) {
-        // console.log(e)
-
         // Prevent the form from submitting
         e.preventDefault();
 
@@ -36,12 +37,9 @@ if (addMuscForm) {
         xhttp.setRequestHeader("Content-type", "application/json");
         // Tell our AJAX request how to resolve
         xhttp.onreadystatechange = () => {
-
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-
                 // Add the new data to the table
                 addRowToMuscTable(xhttp.response);
-
                 // Clear the input fields for another transaction
                 inputMuscFn.value = '';
                 inputMuscLn.value = '';
@@ -58,21 +56,15 @@ if (addMuscForm) {
 
 
 addRowToMuscTable = (data) => {
-    // console.log(data)
-
     // Get a reference to the current table on the page and clear it out.
     let currentTable = document.getElementById("musician-table");
-    console.log(currentTable.className)
     // Get the location where we should insert the new row (end of table)
     let newRowIndex = currentTable.rows.length;
-    // console.log(newRowIndex)
-
     // Get a reference to the new row from the database query (last object)
     let parsedData = JSON.parse(data);
-    // console.log(parsedData)
     let newRow = parsedData[parsedData.length - 1]
 
-    // Create a row and 4 cells
+    // Create a row and 5 cells
     let row = document.createElement("TR");
     let idCell = document.createElement("TD");
     let muscFirstNameCell = document.createElement("TD");
@@ -86,13 +78,13 @@ addRowToMuscTable = (data) => {
     muscLastNameCell.innerText = newRow.last_name;
     muscInstrCell.innerText = newRow.instrument;
 
+    // render new buttons
     deleteCell = document.createElement("button");
     deleteCell.innerHTML += `<i class="bi bi-trash3-fill"></i>Delete`;
     deleteCell.onclick = function () {
         deleteMusician(newRow.musician_id);
     };
     deleteCell.className = "btn btn-danger btn-small";
-
 
     editCell = document.createElement("button");
     editCell.innerHTML += `<i class="bi bi-pencil-square"></i> Edit`;
@@ -124,24 +116,17 @@ addRowToMuscTable = (data) => {
     row.setAttribute('data-value', newRow.musician_id);
     tableRef.appendChild(row);
 
-
-    // // Start of new Step 8 code for adding new data to the dropdown menu for updating people
-
-    // // Find drop down menu, create a new option, fill data in the option (full name, id),
-    // // then append option to drop down menu so newly created rows via ajax will be found in it without needing a refresh
-    // let selectMenu = document.getElementById("mySelect");
-    // let option = document.createElement("option");
-    // option.text = newRow.fname + ' ' + newRow.lname;
-    // option.value = newRow.id;
-    // selectMenu.add(option);
-    // // End of new step 8 code.
 }
 
 
-
+// EDIT
+// Bellow helper function to move data from front end tables to bootstrap modal for Update/Edit
+// Citation for the below function:
+// Date: 8/08/2022
+// Adapted from: Stackoverflow answer by mg1075
+// Source URL:  https://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal
 $(document).on("click", ".open-editMusc", function () {
     var myMusc = $(this).data('id');
-    console.log(myMusc)
     if (typeof myMusc === 'string') {
         var string = myMusc
         eval('var obj=' + string);
@@ -159,15 +144,12 @@ $(document).on("click", ".open-editMusc", function () {
 
 });
 
-
 // Get the objects we need to modify
 let updateMuscForm = document.getElementById('update-musician');
-
 
 if (updateMuscForm) {
     // Modify the objects we need
     updateMuscForm.addEventListener("submit", function (e) {
-
         // Prevent the form from submitting
         e.preventDefault();
         $(".modal-header button").click();
@@ -184,9 +166,6 @@ if (updateMuscForm) {
         let musLnValue = inputMuscLn.value;
         let musInstrValue = inputMuscInstr.value;
 
-        // currently the database table for bsg_people does not allow updating values to NULL
-        // so we must abort if being bassed NULL for collectionName
-
         if (isNaN(musIdValue)) {
             return;
         }
@@ -199,8 +178,6 @@ if (updateMuscForm) {
             instrument: musInstrValue
         }
 
-        // console.log(data)
-
         // Setup our AJAX request
         var xhttp = new XMLHttpRequest();
         xhttp.open("PUT", "/musicians/edit-musician", true);
@@ -211,10 +188,7 @@ if (updateMuscForm) {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
 
                 // Add the new data to the table
-                // console.log(colIdValue)
                 updateMuscRow(xhttp.response, musIdValue, musFnValue, musLnValue, musInstrValue);
-
-
             }
             else if (xhttp.readyState == 4 && xhttp.status != 200) {
                 console.log("There was an error with the input.")
@@ -225,7 +199,6 @@ if (updateMuscForm) {
         xhttp.send(JSON.stringify(data));
     })
 }
-
 
 function updateMuscRow(data, muscId, muscFn, muscLn, muscInstr) {
     let parsedData = JSON.parse(data);
@@ -254,8 +227,7 @@ function updateMuscRow(data, muscId, muscFn, muscLn, muscInstr) {
 
             td3.innerHTML = parsedData[i - 1].instrument;
 
-            // let actioncell = updateRowIndex.getElementsByTagName("td")[2];
-            // console.log(actioncell)
+            // delete current action cell
             row.deleteCell(4)
 
             let actionCell = document.createElement("TD");
@@ -286,7 +258,6 @@ function updateMuscRow(data, muscId, muscFn, muscLn, muscInstr) {
             // actionCell.appendChild(document.createTextNode('\u00A0'));
             // actionCell.appendChild(viewcell)
             row.appendChild(actionCell);
-
         }
     }
 }
@@ -296,14 +267,10 @@ function updateMuscRow(data, muscId, muscFn, muscLn, muscInstr) {
 
 // code for deletePerson function using jQuery
 function deleteMusician(musicianId) {
-    // console.log("personID ", personID)
-
     let link = '/musicians/delete-musician';
     let data = {
         id: musicianId
     };
-
-    // console.log(data)
 
     $.ajax({
         url: link,
@@ -316,12 +283,9 @@ function deleteMusician(musicianId) {
     });
 }
 
-
 function deleteMuscRow(musicianId) {
-
     let table = document.getElementById("musician-table");
     for (let i = 0, row; row = table.rows[i]; i++) {
-        // console.log(row)
         //iterate through rows
         //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == musicianId) {
