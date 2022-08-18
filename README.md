@@ -1,3 +1,4 @@
+This is a database crud app build by Nishanth Dass and Christopher Irwin at Oregon State University. The project was orginally hosted on school servers, but is now currently hosted on Heroku. Link: https://myjazzy.herokuapp.com/
 
 ### Project Outline
 
