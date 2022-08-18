@@ -16,7 +16,7 @@ A database user would be inserting 100s of records and the collection will span 
 
 ### Database Outline
 
-**Listeners: **records the details of listeners who want to utilize the jazz record catalog
+**Listeners:** records the details of listeners who want to utilize the jazz record catalog
 
 
 
