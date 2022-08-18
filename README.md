@@ -1,3 +1,7 @@
+# myJazzRecordsApp
+
+**<span style="text-decoration:underline;">myJazzRecordsApp</span>**
+
 This is a database crud app build by Nishanth Dass and Christopher Irwin at Oregon State University. The project is hosted on Heroku. Link: https://myjazzy.herokuapp.com/
 
 ### Project Outline
@@ -93,6 +97,7 @@ A database user would be inserting 100s of records and the collection will span 
 
 ### ERD
 
+![erd](https://user-images.githubusercontent.com/19554568/185455588-ac77374f-5217-40b2-a1b4-a593c9052249.png)
 
 
 
