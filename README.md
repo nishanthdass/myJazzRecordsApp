@@ -104,12 +104,7 @@ A database user would be inserting 100s of records and the collection will span 
 
 ### Schema
 
-
-
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image2.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image2.png "image_tooltip")
+![schema](https://user-images.githubusercontent.com/19554568/185456201-27ecb31c-116d-46e7-bff0-81b203952fdf.png)
 
 
 
@@ -1150,30 +1145,16 @@ Our final set of entities has no transitive dependencies and we believe each ele
 #### Display Collections
 
 
-
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image3.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image3.png "image_tooltip")
+![displaycol](https://user-images.githubusercontent.com/19554568/185456316-59ccf330-41f0-49b2-b7fe-186fbfcd0dfb.png)
 
 
 
 #### Insert Collection
 
+![insertcol](https://user-images.githubusercontent.com/19554568/185456359-df5d2a7a-67f0-48b3-9e07-7d96fe4dfe42.png)
 
+![insertcol2](https://user-images.githubusercontent.com/19554568/185456376-c78735e4-f735-474d-9516-e2eb8dd9e071.png)
 
-<p id="gdcalert4" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image4.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert5">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image4.png "image_tooltip")
-
-
-
-
-<p id="gdcalert5" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image5.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert6">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image5.png "image_tooltip")
 
 
 
